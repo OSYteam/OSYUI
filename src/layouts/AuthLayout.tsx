@@ -1,16 +1,14 @@
 // import { Outlet } from 'react-router-dom';
 import { Box, Container, Typography } from '@mui/material';
 import { Navigate, Outlet } from 'react-router';
+import { useAuthStore } from '../store/authStore';
 
 const AuthLayout = () => {
 
 
-  const isAuthenticated = () => {
-    return true;
-  };
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
 
-
-  return isAuthenticated() && <Navigate to="/dashboard" />;
+  if (isAuthenticated) return <Navigate to="/dashboard" />;
 
   return (
     <Container maxWidth="sm" sx={{ mt: 10 }}>
