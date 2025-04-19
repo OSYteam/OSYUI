@@ -2,7 +2,7 @@ import {
   Box,
   CssBaseline
 } from '@mui/material';
-import { Outlet } from 'react-router';
+import { Outlet } from 'react-router-dom';
 import Appbar from './components/Appbar';
 import DrawerMenu from './components/DrawerMenu';
 
@@ -10,6 +10,8 @@ const drawerWidth = 160;
 
 const RootLayout = () => {
 
+
+  // console.log("RootLayout");
 
 
 
@@ -27,7 +29,7 @@ const RootLayout = () => {
           flexGrow: 1,
           p: 1,
           // width: { sm: `calc(100% - ${drawerWidth}px)` },
-          mt: 8, 
+          mt: 8,
           // bgcolor: "yellowgreen",
           // boxShadow: 23,
           height: "93vh"
@@ -35,6 +37,7 @@ const RootLayout = () => {
       >
         <Outlet />
       </Box>
+
     </Box >
   );
 };

@@ -13,7 +13,7 @@ import {
 import { useState } from 'react';
 import { FaNewspaper, FaStore } from 'react-icons/fa';
 import { MdSettings } from 'react-icons/md';
-import { NavLink } from 'react-router';
+import { NavLink } from 'react-router-dom';
 
 const drawerWidth = 160;
 

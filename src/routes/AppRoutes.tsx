@@ -1,9 +1,11 @@
-import { createBrowserRouter, RouterProvider } from 'react-router';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
 import AuthLayout from '../layouts/AuthLayout';
 import RootLayout from '../layouts/rootLayout/RootLayout';
 import Login from '../pages/auth/Login';
 import Profile from '../pages/dashboard/Profile';
 import OrderPage from '../pages/dashboard/order/OrderPageContainer';
+import RouteGuard from './RouteGuard';
 
 
 
@@ -11,13 +13,13 @@ import OrderPage from '../pages/dashboard/order/OrderPageContainer';
 const router = createBrowserRouter([
   {
     path: '/',
-    // element: <RouteGuard />,
+    element: <RouteGuard />,
     children: [
       {
-        path: '/dashboard',
+        path: 'dashboard',
         element: <RootLayout />,
         children: [
-          { path: 'orders', element: <OrderPage /> },
+          { index: true, element: <OrderPage /> },
           { path: 'profile', element: <Profile /> },
         ]
       }
@@ -27,11 +29,12 @@ const router = createBrowserRouter([
     path: '/auth',
     element: <AuthLayout />,
     children: [
-      { path: '', element: <Login /> },
+      { index: true, element: <Login /> },
     ]
   }
 ]);
 
 const AppRoutes = () => <RouterProvider router={router} />;
 
+export const useRouter = () => router;
 export default AppRoutes;
