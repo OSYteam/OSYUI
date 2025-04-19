@@ -1,24 +1,23 @@
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import AuthLayout from '../layouts/AuthLayout';
-import RootLayout from '../layouts/RootLayout';
-import Home from '../pages/dashboard/Home';
+import RootLayout from '../layouts/rootLayout/RootLayout';
 import Login from '../pages/auth/Login';
 import Profile from '../pages/dashboard/Profile';
-import RouteGuard from './RouteGuard';
+import OrderPage from '../pages/dashboard/order/OrderPageContainer';
 
 
 
 
 const router = createBrowserRouter([
   {
-    path: '',
-    element: <RouteGuard />,
+    path: '/',
+    // element: <RouteGuard />,
     children: [
       {
         path: '/dashboard',
         element: <RootLayout />,
         children: [
-          { path: '', element: <Home /> },
+          { path: 'orders', element: <OrderPage /> },
           { path: 'profile', element: <Profile /> },
         ]
       }

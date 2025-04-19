@@ -9,7 +9,8 @@ const RouteGuard = () => {
 
     const isAuthenticated = useAuthStore(state => state.isAuthenticated);
 
-    return isAuthenticated ? <Outlet /> : <Navigate to="/auth" />;
+    // return isAuthenticated ? <Outlet /> : <Navigate to="/auth" />;
+    return <Navigate to="/dashboard" />;
 };
 
 export default RouteGuard;
