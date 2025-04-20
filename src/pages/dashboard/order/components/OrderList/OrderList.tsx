@@ -1,114 +1,115 @@
-import { Box, Card, Stack, Typography } from "@mui/material";
+import { Box, Card, Typography, Divider } from "@mui/material";
 
-const orders = [
-    {
-        id: "1000000023261",
-        orderNumber: "1221047877",
-        customer: {
-            firstName: "Ali",
-            lastName: "Yılmaz"
-        },
-        totalPrice: 40.99,
-        deliveryType: "GO",
-        payment: {
-            mealCard: {
-                cardSourceType: "PLUXEE - ONLINE"
-            }
-        },
-        eta: "32 - 47 dk"
-    },
-    {
-        id: "1000000023262",
-        orderNumber: "1221047999",
-        customer: {
-            firstName: "Zeynep",
-            lastName: "Demir"
-        },
-        totalPrice: 68.5,
-        deliveryType: "STORE",
-        payment: {
-            mealCard: {
-                cardSourceType: "MULTINET"
-            }
-        },
-        eta: "25 - 35 dk"
-    },
-    {
-        id: "1000000023263",
-        orderNumber: "1221048001",
-        customer: {
-            firstName: "Mert",
-            lastName: "Kaya"
-        },
-        totalPrice: 55.25,
-        deliveryType: "GO",
-        payment: {
-            mealCard: {
-                cardSourceType: "TICKET RESTAURANT"
-            }
-        },
-        eta: "40 - 55 dk"
-    },
-    {
-        id: "1000000023264",
-        orderNumber: "1221048033",
-        customer: {
-            firstName: "Elif",
-            lastName: "Şahin"
-        },
-        totalPrice: 32.0,
-        deliveryType: "STORE",
-        payment: {
-            mealCard: {
-                cardSourceType: "PLUXEE - MAĞAZA"
-            }
-        },
-        eta: "20 - 30 dk"
-    }
-];
+// Marketplace renkleri
+const marketplaceColors = {
+    "Trendyol Yemek": "#FF671F",
+    "Getir": "#5D3FD3",
+    "Yemek Sepeti": "#E60012",
+} as const;
 
-const getMarketplaceName = (deliveryType: string) => {
-    switch (deliveryType) {
-        case "GO":
-        case "STORE":
-            const marketplaces = ["Trendyol Yemek", "Getir", "Yemek Sepeti"];
-            return marketplaces[Math.floor(Math.random() * marketplaces.length)];
-        default:
-            return "Bilinmeyen";
-    }
-};
+type MarketplaceType = keyof typeof marketplaceColors;
 
-const OrderList = () => {
+const MarketplaceBadge = ({ name }: { name: MarketplaceType }) => (
+    <Box
+        sx={{
+            backgroundColor: marketplaceColors[name],
+            color: "white",
+            borderRadius: 1,
+            px: 1.5,
+            py: 0.5,
+            display: "inline-block",
+            fontWeight: "bold",
+            fontSize: "0.8rem",
+            minWidth: 100,
+            textAlign: "center",
+            mt: 1,
+        }}
+    >
+        {name}
+    </Box>
+);
+
+const OrderList = ({
+    orders,
+    onOrderSelect,
+}: {
+    orders: any[];
+    onOrderSelect: (order: any) => void;
+}) => {
     return (
-        <Box
-            m={2}
-            sx={{
-                height: "100%",
-                width: "30%",
-                ml: 2
-            }}
-        >
-            <Stack spacing={2}>
+        <Box m={2} sx={{ width: "100%" }}>
+            <Box display="flex" flexDirection="column" gap={2}>
                 {orders.map((order) => (
-                    <Card key={order.id} sx={{ p: 2 }}>
-                        <Typography variant="h6" gutterBottom>
-                            Sipariş No: {order.orderNumber}
-                        </Typography>
-                        <Typography variant="body1">
-                            Müşteri: {order.customer.firstName} {order.customer.lastName}
-                        </Typography>
-                        <Typography variant="body2">Toplam Tutar: ₺{order.totalPrice}</Typography>
-                        <Typography variant="body2">Teslimat Tipi: {order.deliveryType}</Typography>
-                        <Typography variant="body2">
-                            Pazaryeri: {getMarketplaceName(order.deliveryType)}
-                        </Typography>
-                        <Typography variant="body2">
-                            Ödeme: {order.payment?.mealCard?.cardSourceType || "Bilinmiyor"}
-                        </Typography>
-                        <Typography variant="body2">Tahmini Süre: {order.eta}</Typography>
+                    <Card
+                        key={order.id}
+                        onClick={() => onOrderSelect(order)}
+                        sx={{
+                            p: 2,
+                            display: "flex",
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            gap: 2,
+                            boxShadow: 3,
+                            borderRadius: 3,
+                            cursor: "pointer",
+                            "&:hover": {
+                                backgroundColor: "#f1f1f1",
+                            },
+                        }}
+                    >
+                        {/* Sol */}
+                        <Box sx={{ minWidth: 200 }}>
+                            <Typography variant="subtitle2" color="text.secondary">
+                                Sipariş No:
+                            </Typography>
+                            <Typography variant="body1" fontWeight="bold">
+                                {order.orderNumber}
+                            </Typography>
+                            <Divider sx={{ my: 1 }} />
+                            <Typography variant="subtitle2" color="text.secondary">
+                                Müşteri:
+                            </Typography>
+                            <Typography variant="body1">
+                                {order.customer.firstName} {order.customer.lastName}
+                            </Typography>
+                        </Box>
+
+                        {/* Orta */}
+                        <Box sx={{ minWidth: 200 }}>
+                            <Typography variant="subtitle2" color="text.secondary">
+                                Tutar:
+                            </Typography>
+                            <Typography variant="body1">₺{order.totalPrice.toFixed(2)}</Typography>
+                            <Divider sx={{ my: 1 }} />
+                            <Typography variant="subtitle2" color="text.secondary">
+                                Teslimat Tipi:
+                            </Typography>
+                            <Typography variant="body1">{order.deliveryType}</Typography>
+                        </Box>
+
+                        {/* Sağ */}
+                        <Box sx={{ minWidth: 200 }}>
+                            <Typography variant="subtitle2" color="text.secondary">
+                                Ödeme:
+                            </Typography>
+                            <Typography variant="body1">
+                                {order.payment?.mealCard?.cardSourceType || "Bilinmiyor"}
+                            </Typography>
+                            <Divider sx={{ my: 1 }} />
+                            <Typography variant="subtitle2" color="text.secondary">
+                                Tahmini Süre:
+                            </Typography>
+                            <Typography variant="body1">{order.eta}</Typography>
+
+                            {/* Marketplace Badge */}
+                            {order.marketplace && (
+                                <MarketplaceBadge name={order.marketplace as MarketplaceType} />
+                            )}
+                        </Box>
                     </Card>
                 ))}
-            </Stack>
+            </Box>
         </Box>
     );
 };

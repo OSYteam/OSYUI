@@ -1,30 +1,127 @@
+// import { Box, Stack } from "@mui/material";
+// import OrderDetail from "./components/OrderDetail/OrderDetail";
+// import OrderList from "./components/OrderList/OrderList";
+
+// const OrderPage = () => {
+
+//     return (
+//         <Box sx={{
+//             height: "90%",
+//             borderRadius: 5,
+//             backgroundColor: "whitesmoke",
+//             m: 2,
+
+//         }}>
+
+//             <Stack direction={"row"}>
+
+
+//             <OrderList />
+
+//             <OrderDetail />
+//             </Stack>
+
+//         </Box>
+//     )
+
+// }
+
+
+// export default OrderPage;
+
+import { useState } from "react";
 import { Box, Stack } from "@mui/material";
 import OrderDetail from "./components/OrderDetail/OrderDetail";
 import OrderList from "./components/OrderList/OrderList";
 
+const marketplaces = ["Trendyol Yemek", "Getir", "Yemek Sepeti"] as const;
+
+const marketplaceColors: Record<typeof marketplaces[number], string> = {
+    "Trendyol Yemek": "#FF671F",
+    "Getir": "#5D3FD3",
+    "Yemek Sepeti": "#E60012",
+};
+
+const MarketplaceBadge = ({ name }: { name: typeof marketplaces[number] }) => (
+    <Box
+        sx={{
+            backgroundColor: marketplaceColors[name],
+            color: "white",
+            borderRadius: 1,
+            px: 1.5,
+            py: 0.5,
+            display: "inline-block",
+            fontWeight: "bold",
+            fontSize: "0.8rem",
+            minWidth: 100,
+            textAlign: "center",
+        }}
+    >
+        {name}
+    </Box>
+);
+
+const orders = [
+    {
+        id: "1000000023261",
+        orderNumber: "1221047877",
+        customer: { firstName: "Ali", lastName: "Yılmaz" },
+        totalPrice: 40.99,
+        deliveryType: "GO",
+        payment: { mealCard: { cardSourceType: "PLUXEE - ONLINE" } },
+        eta: "32 - 47 dk",
+        marketplace: "Yemek Sepeti",
+    },
+    {
+        id: "1000000023262",
+        orderNumber: "1221047999",
+        customer: { firstName: "Zeynep", lastName: "Demir" },
+        totalPrice: 68.5,
+        deliveryType: "STORE",
+        payment: { mealCard: { cardSourceType: "MULTINET" } },
+        eta: "25 - 35 dk",
+        marketplace: "Trendyol Yemek",
+    },
+    {
+        id: "1000000023263",
+        orderNumber: "1221048001",
+        customer: { firstName: "Mert", lastName: "Kaya" },
+        totalPrice: 55.25,
+        deliveryType: "GO",
+        payment: { mealCard: { cardSourceType: "TICKET RESTAURANT" } },
+        eta: "40 - 55 dk",
+        marketplace: "Trendyol Yemek",
+    },
+    {
+        id: "1000000023264",
+        orderNumber: "1221048033",
+        customer: { firstName: "Elif", lastName: "Şahin" },
+        totalPrice: 32.0,
+        deliveryType: "STORE",
+        payment: { mealCard: { cardSourceType: "PLUXEE - MAĞAZA" } },
+        eta: "20 - 30 dk",
+        marketplace: "Getir",
+    },
+];
+
 const OrderPage = () => {
+    const [selectedOrder, setSelectedOrder] = useState(null);
 
     return (
-        <Box sx={{
-            height: "90%",
-            borderRadius: 5,
-            backgroundColor: "whitesmoke",
-            m: 2,
-            
-        }}>
-
+        <Box
+            sx={{
+                height: "90%",
+                borderRadius: 5,
+                backgroundColor: "whitesmoke",
+                m: 2,
+            }}
+        >
             <Stack direction={"row"}>
-
-
-            <OrderList />
-
-            <OrderDetail />
+                <OrderList orders={orders} onOrderSelect={setSelectedOrder} />
+                <OrderDetail order={selectedOrder} />
             </Stack>
-
         </Box>
-    )
-
-}
-
+    );
+};
 
 export default OrderPage;

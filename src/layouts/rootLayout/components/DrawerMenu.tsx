@@ -42,7 +42,7 @@ const DrawerMenu = () => {
         },
         {
             text: 'Ayarlar',
-            path: '/dashboard',
+            path: '/dashboard/settings',
             icon: <MdSettings fontSize={25} />
 
         },

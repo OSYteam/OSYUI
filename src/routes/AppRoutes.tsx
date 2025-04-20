@@ -4,6 +4,7 @@ import RootLayout from '../layouts/rootLayout/RootLayout';
 import Login from '../pages/auth/Login';
 import Profile from '../pages/dashboard/Profile';
 import OrderPage from '../pages/dashboard/order/OrderPageContainer';
+import Settings from '../pages/dashboard/Settings';
 
 
 
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
         children: [
           { path: 'orders', element: <OrderPage /> },
           { path: 'profile', element: <Profile /> },
+          { path: 'settings', element: <Settings /> },
         ]
       }
     ]
