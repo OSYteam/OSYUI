@@ -96,13 +96,7 @@ import { Box, Card, CardContent, Typography, Divider } from "@mui/material";
 const OrderDetail = ({ order }: { order: any }) => {
   if (!order) {
     return (
-      <Box m={2} sx={{ width: "30%", ml: 2 }}>
-        <Card sx={{ p: 2 }}>
-          <CardContent>
-            <Typography variant="h6">Sipariş seçiniz</Typography>
-          </CardContent>
-        </Card>
-      </Box>
+      <div />
     );
   }
 
