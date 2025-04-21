@@ -1,99 +1,7 @@
-// import { Box, Card, CardContent, Typography, Divider, List, ListItem, ListItemText } from "@mui/material"
+import { Box, Card, CardContent, Typography, Divider, Stack, Button } from "@mui/material";
+import { MarketplaceBadge, MarketplaceType, Order } from "../../types/CustomOrderTypes";
 
-// const order = {
-//   orderNumber: "1221047877",
-//   customer: {
-//     firstName: "Ali",
-//     lastName: "Y",
-//   },
-//   totalPrice: 40.99,
-//   deliveryType: "GO",
-//   callCenterPhone: "0212 365 34 03",
-//   lines: [
-//     {
-//       name: "İkili Hamburger Menü",
-//       price: 34.99,
-//       modifierProducts: [
-//         { name: "Et Burger" },
-//         { name: "Tavuk Burger" },
-//         { name: "Patates Kızartması (Büyük Boy)" },
-//       ],
-//     },
-//   ],
-//   eta: "32 - 47 dk"
-// };
-
-// const OrderDetail = () => {
-//   return (
-//     <Box
-//       m={2}
-//       sx={{
-//         height: "100%",
-//         width: "30%",
-//         ml: 2
-//       }}
-//     >
-//       <Card sx={{ height: "auto", m: 1, p: 2 }}>
-//         <CardContent>
-//           <Typography variant="h6" gutterBottom>
-//             Sipariş Detayı
-//           </Typography>
-
-//           <Typography variant="subtitle2" color="text.secondary">
-//             Sipariş Numarası: {order.orderNumber}
-//           </Typography>
-
-//           <Typography variant="subtitle2" color="text.secondary">
-//             Müşteri: {order.customer.firstName} {order.customer.lastName}
-//           </Typography>
-
-//           <Typography variant="subtitle2" color="text.secondary">
-//             Teslimat Tipi: {order.deliveryType === "GO" ? "Restoran Kurye" : "Mağaza"}
-//           </Typography>
-
-//           <Typography variant="subtitle2" color="text.secondary">
-//             Tahmini Süre: {order.eta}
-//           </Typography>
-
-//           <Typography variant="subtitle2" color="text.secondary" sx={{ mt: 1 }}>
-//             Çağrı Merkezi: {order.callCenterPhone}
-//           </Typography>
-
-//           <Divider sx={{ my: 2 }} />
-
-//           <Typography variant="subtitle1" gutterBottom>
-//             Ürünler
-//           </Typography>
-
-//           <List dense>
-//             {order.lines.map((line, i) => (
-//               <Box key={i}>
-//                 <ListItem>
-//                   <ListItemText
-//                     primary={`${line.name} - ${line.price.toFixed(2)}₺`}
-//                     secondary={`Alt Ürünler: ${line.modifierProducts.map(mp => mp.name).join(", ")}`}
-//                   />
-//                 </ListItem>
-//                 {i < order.lines.length - 1 && <Divider />}
-//               </Box>
-//             ))}
-//           </List>
-
-//           <Divider sx={{ my: 2 }} />
-
-//           <Typography variant="h6" color="primary">
-//             Toplam: {order.totalPrice.toFixed(2)}₺
-//           </Typography>
-//         </CardContent>
-//       </Card>
-//     </Box>
-//   )
-// }
-
-// export default OrderDetail;
-import { Box, Card, CardContent, Typography, Divider } from "@mui/material";
-
-const OrderDetail = ({ order }: { order: any }) => {
+const OrderDetail = ({ order, handleOrderSelect }: { order: any, handleOrderSelect: (order: Order | null) => void; }) => {
   if (!order) {
     return (
       <div />
@@ -102,23 +10,112 @@ const OrderDetail = ({ order }: { order: any }) => {
 
   return (
     <Box m={2} sx={{ width: "30%", ml: 2 }}>
-      <Card sx={{ p: 2 }}>
+      <Card sx={{ p: 2, borderRadius: 5 }}>
         <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Sipariş Detayı
-          </Typography>
+          <Stack >
+            <Typography variant="h6" align="center" gutterBottom>
+              Sipariş Detayı
+            </Typography>
+            {/* Marketplace Badge */}
+            {order.marketplace && (
+              <MarketplaceBadge name={order.marketplace as MarketplaceType} />
+            )}
+          </Stack>
 
+          <Divider sx={{ my: 3 }} />
           <Typography variant="subtitle2">
             Sipariş Numarası: {order.orderNumber}
           </Typography>
+
+          <Typography variant="subtitle2">
+            Teslimat Tipi: {order.deliveryType === "GO" ? "Restoran Kurye" : "Mağaza"}
+          </Typography>
+          <Typography variant="subtitle2">
+            Ödeme Tipi:  {order.payment?.mealCard?.cardSourceType || "Bilinmiyor"}
+          </Typography>
+          <Typography variant="subtitle2">Sipariş Tarihi: {order.eta}</Typography>
+          <Typography variant="subtitle2">Toplam: {order.totalPrice.toFixed(2)}₺</Typography>
+
+          <Divider sx={{ my: 3 }} />
+
+          <Typography variant="h6" align="center" gutterBottom>
+            Müşteri Bilgileri
+          </Typography>
+
+          <Divider sx={{ my: 3 }} />
+
           <Typography variant="subtitle2">
             Müşteri: {order.customer.firstName} {order.customer.lastName}
           </Typography>
           <Typography variant="subtitle2">
-            Teslimat Tipi: {order.deliveryType === "GO" ? "Restoran Kurye" : "Mağaza"}
+            Tel: {order.customer.phoneNumber}
           </Typography>
-          <Typography variant="subtitle2">Tahmini Süre: {order.eta}</Typography>
-          <Typography variant="subtitle2">Toplam: {order.totalPrice.toFixed(2)}₺</Typography>
+          <Typography variant="subtitle2">
+            Adres: {order.customer.address}
+          </Typography>
+
+          <Divider sx={{ my: 3 }} />
+
+          <Typography variant="h6" align="center" gutterBottom>
+            İşlemler
+          </Typography>
+
+          <Divider sx={{ my: 3 }} />
+
+          <Stack spacing={1}>
+
+            <Stack direction='row' spacing={1}>
+
+              <Button
+                sx={{ width: '100px', height: '35px' }}
+                variant="contained"
+                color="info"
+              >
+                Yolda
+              </Button>
+
+              <Button
+                sx={{ width: '140px', height: '35px' }}
+                variant="contained"
+                color="success"
+              >
+                Teslim Edildi
+              </Button>
+
+              <Button
+                color="error"
+                sx={{ width: '100px' }}
+                variant="contained"
+              >
+                İptal Et
+              </Button>
+
+            </Stack>
+
+            <Button
+              sx={{ width: '100%', height: '35px' }}
+              variant="contained"
+              color="inherit"
+            >
+              Yazdır
+            </Button>
+
+            <Button
+              sx={{ width: '100%', height: '35px' }}
+              variant="contained"
+              color="warning"
+              onClick={() => {
+                handleOrderSelect(null);
+              }}
+            >
+              Siparişi Kapat
+            </Button>
+          </Stack>
+
+
+
+
+
         </CardContent>
       </Card>
     </Box>
