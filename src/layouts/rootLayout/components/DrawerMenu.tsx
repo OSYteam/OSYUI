@@ -216,6 +216,7 @@ const DrawerMenu = () => {
                         <ListItemButton
                             component={NavLink}
                             to={item.path}
+                            end={item.path === "/dashboard/"}
                             sx={{
                                 color: '#333',
                                 borderRadius: '10px',
