@@ -18,9 +18,11 @@ const Appbar = () => {
 
     const StyledToolbar = styled(Toolbar)(() => ({
         // backgroundColor: "red",
+        // bgcolor: "pink",
+        // height: 20,
         alignItems: 'flex-start',
         '@media all': {
-            // minHeight: 128,
+            minHeight: 20,
         }
     }));
 
@@ -55,7 +57,7 @@ const Appbar = () => {
                     // aria-haspopup="true"
                     aria-expanded={open ? 'true' : undefined}
                     onClick={handleClick}
-                    sx={{alignSelf: "center"}}
+                    sx={{ alignSelf: "center" }}
                 >
                     <Tooltip title="Account settings">
 
