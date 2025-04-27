@@ -15,7 +15,8 @@ export const useAuthStore = create<AuthState>()(
 
   immer((set) => ({
 
-    isAuthenticated: !!accessTokenLocalStroge,
+    // isAuthenticated: !!accessTokenLocalStroge,
+    isAuthenticated: true,
     accessToken: accessTokenLocalStroge,
 
     setAuth: (accessToken: string) => {
