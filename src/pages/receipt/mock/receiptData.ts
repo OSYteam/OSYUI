@@ -1,4 +1,4 @@
-export const orders = [
+const mockReceiptData = [
     {
         id: "1000000023261",
         orderNumber: "1221047877",
@@ -91,3 +91,6 @@ export const orders = [
     },
 
 ];
+
+
+export default mockReceiptData;

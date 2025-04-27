@@ -3,12 +3,12 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import AuthLayout from '../layouts/AuthLayout';
 import RootLayout from '../layouts/rootLayout/RootLayout';
 import Login from '../pages/auth/Login';
-import Profile from '../pages/dashboard/Profile';
-import OrderPage from '../pages/dashboard/order/OrderPageContainer';
+import Profile from '../pages/profile/Profile';
+import OrderPage from '../pages/order/OrderPageContainer';
 import RouteGuard from './RouteGuard';
-import Settings from '../pages/dashboard/Settings';
-import Stats from '../pages/dashboard/Stats';
-import Receipt from '../pages/dashboard/Receipt';
+import Settings from '../pages/settings/Settings';
+import Receipt from '../pages/receipt/Receipt';
+import Stats from '../pages/stats/Stats';
 
 
 
