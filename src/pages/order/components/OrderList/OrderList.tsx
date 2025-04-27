@@ -1,40 +1,16 @@
-import { Box, Card, Typography, Divider } from "@mui/material";
+import { Box, Card, Typography, Divider, Button, Stack } from "@mui/material";
+import { Order } from "../../types/CustomOrderTypes";
+// import { MarketplaceBadge, MarketplaceType, Order } from "../../types/CustomOrderTypes";
 
-// Marketplace renkleri
-const marketplaceColors = {
-    "Trendyol Yemek": "#FF671F",
-    "Getir": "#5D3FD3",
-    "Yemek Sepeti": "#E60012",
-} as const;
-
-type MarketplaceType = keyof typeof marketplaceColors;
-
-const MarketplaceBadge = ({ name }: { name: MarketplaceType }) => (
-    <Box
-        sx={{
-            backgroundColor: marketplaceColors[name],
-            color: "white",
-            borderRadius: 1,
-            px: 1.5,
-            py: 0.5,
-            display: "inline-block",
-            fontWeight: "bold",
-            fontSize: "0.8rem",
-            minWidth: 100,
-            textAlign: "center",
-            mt: 1,
-        }}
-    >
-        {name}
-    </Box>
-);
 
 const OrderList = ({
     orders,
-    onOrderSelect,
+    selectedOrder,
+    onOrderSelect: handleOrder,
 }: {
-    orders: any[];
-    onOrderSelect: (order: any) => void;
+    orders: Order[];
+    selectedOrder: Order | null;
+    onOrderSelect: (order: Order) => void;
 }) => {
     return (
         <Box m={2} sx={{ width: "100%" }}>
@@ -42,7 +18,7 @@ const OrderList = ({
                 {orders.map((order) => (
                     <Card
                         key={order.id}
-                        onClick={() => onOrderSelect(order)}
+                        // onClick={() => handleOrder(order)}
                         sx={{
                             p: 2,
                             display: "flex",
@@ -52,10 +28,10 @@ const OrderList = ({
                             gap: 2,
                             boxShadow: 3,
                             borderRadius: 3,
-                            cursor: "pointer",
                             "&:hover": {
                                 backgroundColor: "#f1f1f1",
                             },
+                            border: selectedOrder?.id === order.id ? "3px solid #4caf50" : "1px solid #e0e0e0",
                         }}
                     >
                         {/* Sol */}
@@ -74,6 +50,38 @@ const OrderList = ({
                                 {order.customer.firstName} {order.customer.lastName}
                             </Typography>
                         </Box>
+
+                        {/* Adres Bilgisi */}
+                        <Box sx={{ minWidth: 200, maxWidth: 250, wordBreak: "break-word" }}>
+                            <Typography variant="subtitle2" color="text.secondary">
+                                Adres:
+                            </Typography>
+
+                            <Divider sx={{ my: 1 }} />
+
+                            <Typography
+                                variant="body2"
+                                sx={{
+                                    whiteSpace: "pre-wrap",
+                                    wordBreak: "break-word",
+                                }}
+                            >
+                                {order.customer.address}
+                            </Typography>
+                            <Button
+                                variant="contained"
+                                size="small"
+                                color="info"
+                                sx={{ mt: 1 }}
+                                onClick={() => {
+                                    const query = encodeURIComponent(order.customer.address);
+                                    window.open(`https://www.google.com/maps/search/?api=1&query=${query}`, "_blank");
+                                }}
+                            >
+                                Haritada Aç
+                            </Button>
+                        </Box>
+
 
                         {/* Orta */}
                         <Box sx={{ minWidth: 200 }}>
@@ -98,14 +106,45 @@ const OrderList = ({
                             </Typography>
                             <Divider sx={{ my: 1 }} />
                             <Typography variant="subtitle2" color="text.secondary">
-                                Tahmini Süre:
+                                Tarih/Saat:
                             </Typography>
                             <Typography variant="body1">{order.eta}</Typography>
 
                             {/* Marketplace Badge */}
-                            {order.marketplace && (
+                            {/* {order.marketplace && (
                                 <MarketplaceBadge name={order.marketplace as MarketplaceType} />
-                            )}
+                            )} */}
+                        </Box>
+
+                        <Box sx={{ minWidth: 200 }}>
+                            <Typography variant="subtitle2" color="text.secondary">
+                                İşlemler:
+                            </Typography>
+                            <Divider sx={{ my: 1 }} />
+                            <Stack spacing={1}>
+                                <Button
+                                    color="success"
+                                    sx={{ width: '100px' }}
+                                    variant="contained"
+                                >
+                                    Onayla
+                                </Button>
+                                <Button
+                                    sx={{ width: '100px' }}
+                                    variant="contained"
+                                    color="info"
+                                >
+                                    Adisyon
+                                </Button>
+                                <Button
+                                    sx={{ width: '100px' }}
+                                    variant="contained"
+                                    color="inherit"
+                                    onClick={() => handleOrder(order)}
+                                >
+                                    Detay
+                                </Button>
+                            </Stack>
                         </Box>
                     </Card>
                 ))}
