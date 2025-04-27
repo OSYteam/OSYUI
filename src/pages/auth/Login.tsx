@@ -1,5 +1,5 @@
 import { Button, TextField } from '@mui/material';
-import { useAuthStore } from '../../store/authStore';
+import { useAuthStore } from './store/authStore';
 import { login } from './service/auth.service';
 import { useState } from 'react';
 
