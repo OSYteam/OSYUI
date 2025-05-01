@@ -1,7 +1,6 @@
-import { Outlet, Navigate } from 'react-router-dom';
 import { Box, Container, Typography } from '@mui/material';
-// import { Navigate, Outlet } from 'react-router';
-import { useAuthStore } from '../store/authStore';
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuthStore } from '../pages/auth/store/authStore';
 
 const AuthLayout = () => {
 

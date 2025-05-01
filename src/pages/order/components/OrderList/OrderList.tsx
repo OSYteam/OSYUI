@@ -1,5 +1,6 @@
 import { Box, Card, Typography, Divider, Button, Stack } from "@mui/material";
-import { MarketplaceBadge, MarketplaceType, Order } from "../../types/CustomOrderTypes";
+import { Order } from "../../types/CustomOrderTypes";
+// import { MarketplaceBadge, MarketplaceType, Order } from "../../types/CustomOrderTypes";
 
 
 const OrderList = ({
@@ -110,9 +111,9 @@ const OrderList = ({
                             <Typography variant="body1">{order.eta}</Typography>
 
                             {/* Marketplace Badge */}
-                            {order.marketplace && (
+                            {/* {order.marketplace && (
                                 <MarketplaceBadge name={order.marketplace as MarketplaceType} />
-                            )}
+                            )} */}
                         </Box>
 
                         <Box sx={{ minWidth: 200 }}>
