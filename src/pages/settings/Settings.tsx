@@ -15,12 +15,13 @@ const headingStyle = {
     color: "#1f2d3d",
 };
 
+
 const Settings = () => {
     return (
         <Box
             sx={{
                 p: 5,
-                backgroundColor: "#f5f7fa",
+                backgroundColor: "whitesmoke",
                 minHeight: "100vh",
             }}
         >
@@ -35,7 +36,7 @@ const Settings = () => {
                     <TextField fullWidth label="Mağaza Adı" margin="normal" />
                     <TextField fullWidth label="Vergi Numarası" margin="normal" />
                     <TextField fullWidth label="Adres" margin="normal" />
-                    <Button variant="contained" sx={{ mt: 3, backgroundColor: "#1976d2" }}>
+                    <Button variant="contained" sx={{ mt: 3, backgroundColor: "#2e7d32", color: "whitesmoke" }}>
                         Kaydet
                     </Button>
                 </CardContent>
@@ -48,7 +49,7 @@ const Settings = () => {
                     <TextField fullWidth label="Trendyol API Anahtarı" margin="normal" />
                     <TextField fullWidth label="Getir API Anahtarı" margin="normal" />
                     <TextField fullWidth label="Yemek Sepeti API Anahtarı" margin="normal" />
-                    <Button variant="contained" sx={{ mt: 3, backgroundColor: "#1976d2" }}>
+                    <Button variant="contained" sx={{ mt: 3, backgroundColor: "#0288d1", color: "whitesmoke" }}>
                         Güncelle
                     </Button>
                 </CardContent>
@@ -61,8 +62,8 @@ const Settings = () => {
                     <TextField fullWidth label="E-posta Adresi" margin="normal" />
                     <TextField fullWidth label="Telefon Numarası" margin="normal" />
                     <TextField fullWidth label="Instagram / Sosyal Medya" margin="normal" />
-                    <Button variant="contained" sx={{ mt: 3, backgroundColor: "#1976d2" }}>
-                        Bilgileri Kaydet
+                    <Button variant="contained" sx={{ mt: 3, backgroundColor: "#2e7d32", color: "whitesmoke" }}>
+                        Kaydet
                     </Button>
                 </CardContent>
             </Card>
@@ -73,7 +74,7 @@ const Settings = () => {
                     <Typography sx={headingStyle}>Hesap ve Güvenlik</Typography>
                     <TextField fullWidth type="password" label="Yeni Şifre" margin="normal" />
                     <TextField fullWidth type="password" label="Şifreyi Onayla" margin="normal" />
-                    <Button variant="contained" color="error" sx={{ mt: 3 }}>
+                    <Button variant="contained" /*</CardContent>color="error"*/ sx={{ mt: 3, backgroundColor: "#d32f2f", color: "whitesmoke" }}>
                         Şifreyi Değiştir
                     </Button>
                 </CardContent>
@@ -85,7 +86,7 @@ const Settings = () => {
                     <Typography sx={headingStyle}>Tema ve Görünüm</Typography>
                     <TextField fullWidth label="Renk Teması (HEX)" defaultValue="#49e6d1" margin="normal" />
                     <TextField fullWidth label="Yazı Fontu (örn: Roboto)" margin="normal" />
-                    <Button variant="contained" sx={{ mt: 3, backgroundColor: "#1976d2" }}>
+                    <Button variant="contained" sx={{ mt: 3, backgroundColor: "#0288d1", color: "whitesmoke" }}>
                         Uygula
                     </Button>
                 </CardContent>

@@ -32,7 +32,7 @@ const Profile = () => {
       >
         <Box
           sx={{
-            bgcolor: "#F0F8FF",
+            bgcolor: "whitesmoke",
             width: { md: "35%", xs: "100%" },
             display: "flex",
             flexDirection: "column",
@@ -129,7 +129,7 @@ const Profile = () => {
                 py: 1.5,
                 px: 4,
                 "&:hover": {
-                  bgcolor: "#F0F8FF",
+                  bgcolor: "whitesmoke",
                 },
               }}
             >
