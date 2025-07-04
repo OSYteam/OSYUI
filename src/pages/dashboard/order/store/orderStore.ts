@@ -8,7 +8,7 @@ interface OrderState {
 }
 
 export const useOrderStore = create<OrderState>()(
-    immer((set) => ({
+    immer((_set) => ({
 
     }))
 );

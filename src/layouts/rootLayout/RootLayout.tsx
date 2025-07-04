@@ -6,14 +6,7 @@ import { Outlet } from 'react-router-dom';
 import Appbar from './components/Appbar';
 import DrawerMenu from './components/DrawerMenu';
 
-const drawerWidth = 160;
-
 const RootLayout = () => {
-
-
-  // console.log("RootLayout");
-
-
 
   return (
     <Box sx={{ display: 'flex' }}>
