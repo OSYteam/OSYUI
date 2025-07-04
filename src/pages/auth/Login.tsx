@@ -1,5 +1,5 @@
 import { Button, TextField } from '@mui/material';
-import { useAuthStore } from '../../store/authStore';
+import { useAuthStore } from './store/authStore';
 
 const Login = () => {
 
