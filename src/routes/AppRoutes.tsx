@@ -8,6 +8,7 @@ import RouteGuard from './RouteGuard';
 import OrderPage from '../modules/seller/order/OrderPageContainer';
 import Dashboard from '../modules/seller/dashboard/Dashboard';
 import Home from '../modules/customer/home';
+import ProductManagement from '../modules/seller/productManagement/ProductManagement';
 
 
 const router = createBrowserRouter([
@@ -31,6 +32,7 @@ const router = createBrowserRouter([
         children: [
           { index: true, element: <Dashboard /> },
           { path: 'order', element: <OrderPage /> },
+          { path: 'product', element: <ProductManagement /> },
 
         ]
       }

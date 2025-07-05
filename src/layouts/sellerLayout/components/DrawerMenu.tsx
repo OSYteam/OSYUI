@@ -11,7 +11,7 @@ import {
     Typography
 } from '@mui/material';
 import { useState } from 'react';
-import { FaHome, FaNewspaper, FaReceipt } from 'react-icons/fa';
+import { FaBoxOpen, FaHome, FaNewspaper, FaProductHunt, FaReceipt } from 'react-icons/fa';
 import { MdBarChart, MdSettings } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 
@@ -36,6 +36,14 @@ const DrawerMenu = () => {
             text: 'Siparişlerim',
             path: 'order',
             icon: <FaNewspaper fontSize={25} />,
+            badgeContent: 5,
+            visible: true,
+        },
+
+        {
+            text: 'Ürün Yönetimi',
+            path: 'product',
+            icon: <FaBoxOpen fontSize={25} />,
             badgeContent: 5,
             visible: true,
         },
