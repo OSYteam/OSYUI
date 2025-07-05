@@ -7,6 +7,7 @@ import Login from '../modules/auth/Login';
 import RouteGuard from './RouteGuard';
 import OrderPage from '../modules/seller/order/OrderPageContainer';
 import Dashboard from '../modules/seller/dashboard/Dashboard';
+import Home from '../modules/customer/home';
 
 
 const router = createBrowserRouter([
@@ -20,7 +21,7 @@ const router = createBrowserRouter([
         path: '/',
         element: <RootLayout />,
         children: [
-
+          { index: true, element: <Dashboard /> },
         ]
       },
       {
@@ -39,6 +40,15 @@ const router = createBrowserRouter([
   {
 
 
+  },
+
+  //customer
+  {
+    path: '/c',
+    element: <RootLayout />,
+    children: [
+      { index: true, element: <Home /> },
+    ]
   },
   {
     //magazaismi.ozzy.com/auth
