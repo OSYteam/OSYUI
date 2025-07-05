@@ -7,7 +7,6 @@ const Login = () => {
 
   const handleLogin = () => {
     login();
-    window.location.href = '/dashboard';
   };
 
   return (

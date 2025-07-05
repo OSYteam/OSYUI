@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
-const initialAuth = localStorage.getItem('auth') === 'true';
+const initialAuth = localStorage.getItem('auth') === 'false';
 
 
 interface AuthState {

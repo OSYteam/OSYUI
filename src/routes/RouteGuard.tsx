@@ -11,10 +11,8 @@ const RouteGuard = () => {
     }
 
     if (location.pathname === '/') {
-        return <Navigate to="/dashboard" replace />;
+        return <Navigate to="/seller" replace />;
     }
-
-
 
     return <Outlet />;
 };

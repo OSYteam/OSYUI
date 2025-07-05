@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
-import ReceiptItem from "../dashboard/order/components/ReceiptItem/ReceiptItem";
 import { orders } from './order/components/Data/orders'
+import ReceiptItem from "./order/components/ReceiptItem/ReceiptItem";
 
 
 const Receipt = () => {

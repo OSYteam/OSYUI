@@ -8,7 +8,7 @@ const AuthLayout = () => {
 
   const isAuthenticated = useAuthStore(state => state.isAuthenticated);
 
-  if (isAuthenticated) return <Navigate to="/dashboard" />;
+  if (isAuthenticated) return <Navigate to="/seller" />;
 
   return (
     <Container maxWidth="sm" sx={{ mt: 10 }}>

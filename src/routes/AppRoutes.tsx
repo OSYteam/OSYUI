@@ -2,16 +2,14 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import AuthLayout from '../layouts/AuthLayout';
 import Login from '../pages/auth/Login';
-import Profile from '../pages/dashboard/Profile';
-import OrderPage from '../pages/dashboard/order/OrderPageContainer';
 import RouteGuard from './RouteGuard';
-import Settings from '../pages/dashboard/Settings';
-import Stats from '../pages/dashboard/Stats';
-import Receipt from '../pages/dashboard/Receipt';
 import RootLayout from '../layouts/rootLayout/RootLayout';
 import SellerLayout from '../layouts/sellerLayout/SellerLayout';
-
-
+import OrderPage from '../pages/seller/order/OrderPageContainer';
+import Profile from '../pages/seller/Profile';
+import Settings from '../pages/seller/Settings';
+import Stats from '../pages/seller/Stats';
+import Receipt from '../pages/seller/Receipt';
 
 
 const router = createBrowserRouter([

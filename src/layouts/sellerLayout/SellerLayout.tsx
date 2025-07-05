@@ -14,7 +14,7 @@ const SellerLayout = () => {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
 
-      <Appbar />
+      {/* <Appbar /> */}
 
       <DrawerMenu />
 

@@ -3,8 +3,8 @@ import {
   CssBaseline
 } from '@mui/material';
 import { Outlet } from 'react-router-dom';
-import Appbar from './components/Appbar';
-import DrawerMenu from './components/DrawerMenu';
+import Appbar from '../sellerLayout/components/Appbar';
+import DrawerMenu from '../sellerLayout/components/DrawerMenu';
 
 
 //müşteri layout
@@ -14,7 +14,7 @@ const RootLayout = () => {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
 
-      <Appbar />
+      {/* <Appbar /> */}
 
       <DrawerMenu />
 
