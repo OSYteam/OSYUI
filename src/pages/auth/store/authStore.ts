@@ -1,37 +1,30 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 
-const accessTokenLocalStroge = localStorage.getItem('access_token');
+const initialAuth = localStorage.getItem('auth') === 'false';
 
 
 interface AuthState {
   isAuthenticated: boolean;
-  accessToken: string | null;
-  setAuth: (accessToken: string) => void;
-  clearAuth: () => void;
+  login: () => void;
+  logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
-
   immer((set) => ({
+    isAuthenticated: initialAuth,
 
-    // isAuthenticated: !!accessTokenLocalStroge,
-    isAuthenticated: true,
-    accessToken: accessTokenLocalStroge,
-
-    setAuth: (accessToken: string) => {
+    login: () => {
       set((state) => {
-
-        state.accessToken = accessToken;
         state.isAuthenticated = true;
-        localStorage.setItem('access_token', accessToken);
+        localStorage.setItem('auth', 'true');
       });
     },
 
-    clearAuth: () => {
+    logout: () => {
       set((state) => {
         state.isAuthenticated = false;
-        localStorage.removeItem('access_token');
+        localStorage.removeItem('auth');
       });
     },
   }))

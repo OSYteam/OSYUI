@@ -3,12 +3,12 @@ import {
   CssBaseline
 } from '@mui/material';
 import { Outlet } from 'react-router-dom';
-import Appbar from '../sellerLayout/components/Appbar';
-import DrawerMenu from '../sellerLayout/components/DrawerMenu';
+import Appbar from './components/Appbar';
+import DrawerMenu from './components/DrawerMenu';
 
 
-//müşteri layout
-const RootLayout = () => {
+//Satıcı layout dashvoard vs
+const SellerLayout = () => {
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -37,4 +37,4 @@ const RootLayout = () => {
   );
 };
 
-export default RootLayout;
+export default SellerLayout;

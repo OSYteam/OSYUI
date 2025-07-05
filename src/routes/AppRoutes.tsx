@@ -1,27 +1,41 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import AuthLayout from '../layouts/AuthLayout';
-import RootLayout from '../layouts/rootLayout/RootLayout';
 import Login from '../pages/auth/Login';
-import Profile from '../pages/profile/Profile';
-import OrderPage from '../pages/order/OrderPageContainer';
 import RouteGuard from './RouteGuard';
-import Settings from '../pages/settings/Settings';
-import Receipt from '../pages/receipt/Receipt';
-import Stats from '../pages/stats/Stats';
-
-
+import RootLayout from '../layouts/rootLayout/RootLayout';
+import SellerLayout from '../layouts/sellerLayout/SellerLayout';
+import OrderPage from '../pages/seller/order/OrderPageContainer';
+import Profile from '../pages/seller/Profile';
+import Settings from '../pages/seller/Settings';
+import Stats from '../pages/seller/Stats';
+import Receipt from '../pages/seller/Receipt';
 
 
 const router = createBrowserRouter([
   {
+    //magazaismi.ozzy.com/home
     path: '/',
     element: <RouteGuard />,
     children: [
       {
-        path: 'dashboard',
+        // base path (employee)
+        path: '/',
         element: <RootLayout />,
         children: [
+          //home
+          //product-detail
+          //
+          // { index: true, element: <Login /> },
+        ]
+      },
+      {
+        //magazaismi.ozzy.com/seller/dashboard
+        //satici/dashboard
+        path: '/seller',
+        element: <SellerLayout />,
+        children: [
+          // { index: 'dashboard', element: <HomePage /> },
           { index: true, element: <OrderPage /> },
           { path: 'profile', element: <Profile /> },
           { path: 'settings', element: <Settings /> },
@@ -31,7 +45,14 @@ const router = createBrowserRouter([
       }
     ]
   },
+  //admin.ozzy.com
   {
+
+
+  },
+  {
+    //magazaismi.ozzy.com/auth
+    // /auth
     path: '/auth',
     element: <AuthLayout />,
     children: [
