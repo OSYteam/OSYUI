@@ -1,6 +1,6 @@
-const Home = () => {
+const Dashboard = () => {
     return <div>Ana Sayfa - Giriş yapıldı 🎉</div>;
   };
   
-  export default Home;
+  export default Dashboard;
   

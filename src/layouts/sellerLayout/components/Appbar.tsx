@@ -2,8 +2,8 @@ import { AppBar, Avatar, Button, IconButton, Menu, MenuItem, styled, Toolbar, To
 import { deepOrange } from "@mui/material/colors";
 import { MouseEvent, useState } from "react";
 import { MdMenu } from "react-icons/md";
-import { logout } from "../../../pages/auth/service/auth.service";
-import { useAuthStore } from "../../../pages/auth/store/authStore";
+import { logout } from "../../../modules/auth/service/auth.service";
+import { useAuthStore } from "../../../modules/auth/store/authStore";
 
 const Appbar = () => {
 

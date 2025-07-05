@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { useAuthStore } from '../pages/auth/store/authStore';
+import { useAuthStore } from '../modules/auth/store/authStore';
 
 
 const RouteGuard = () => {

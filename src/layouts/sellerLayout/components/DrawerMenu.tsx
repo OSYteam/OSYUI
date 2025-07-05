@@ -11,8 +11,8 @@ import {
     Typography
 } from '@mui/material';
 import { useState } from 'react';
-import { FaNewspaper, FaStore, FaReceipt } from 'react-icons/fa';
-import { MdSettings, MdBarChart } from 'react-icons/md';
+import { FaHome, FaNewspaper, FaReceipt } from 'react-icons/fa';
+import { MdBarChart, MdSettings } from 'react-icons/md';
 import { NavLink } from 'react-router-dom';
 
 const drawerWidth = 200;
@@ -26,25 +26,37 @@ const DrawerMenu = () => {
 
     const menuContent = [
         {
-            text: 'Siparişlerim',
+            text: 'Dashboard',
             path: '/',
-            icon: <FaNewspaper fontSize={25} />,
-            badgeContent: 5,
+            icon: <FaHome fontSize={25} />,
+            // badgeContent: 5,
+            visible: true,
         },
         {
-            text: 'Ayarlar',
-            path: '/seller/settings',
-            icon: <MdSettings fontSize={25} />,
+            text: 'Siparişlerim',
+            path: 'order',
+            icon: <FaNewspaper fontSize={25} />,
+            badgeContent: 5,
+            visible: true,
         },
         {
             text: 'İstatistik',
             path: '/seller/stats',
             icon: <MdBarChart fontSize={25} />,
+            visible: false,
         },
         {
             text: 'Bilgi Formları',
             path: '/seller/receipt',
             icon: <FaReceipt fontSize={25} />,
+            visible: false,
+        },
+        {
+            text: 'Ayarlar',
+            path: '/seller/settings',
+            icon: <MdSettings fontSize={25} />,
+            visible: false,
+
         },
     ];
 
@@ -56,53 +68,58 @@ const DrawerMenu = () => {
                 </Typography>
             </Toolbar>
             <List sx={{ paddingTop: '20px' }}>
-                {menuContent.map((item) => (
-                    <ListItem key={item.text} disablePadding>
-                        <ListItemButton
-                            component={NavLink}
-                            to={item.path}
-                            sx={{
-                                color: '#333',
-                                borderRadius: '10px',
-                                padding: '12px 15px',
-                                transition: '0.3s all ease',
-                                '&:hover': {
-                                    backgroundColor: '#e0e0e0',
-                                },
-                                '&.active': {
-                                    backgroundColor: '#bdbdbd',
-                                    color: '#212121',
-                                },
-                            }}
-                        >
-                            <Stack direction="row" spacing={2} alignItems="center">
-                                {item.badgeContent ? (
-                                    <Badge
-                                        color="secondary"
-                                        badgeContent={item.badgeContent}
-                                        max={20}
+                {menuContent.map((item) => {
+
+                    if (!item.visible) return;
+
+                    return (
+                        <ListItem key={item.text} disablePadding>
+                            <ListItemButton
+                                component={NavLink}
+                                to={item.path}
+                                sx={{
+                                    color: '#333',
+                                    borderRadius: '10px',
+                                    padding: '12px 15px',
+                                    transition: '0.3s all ease',
+                                    '&:hover': {
+                                        backgroundColor: '#e0e0e0',
+                                    },
+                                    '&.active': {
+                                        backgroundColor: '#bdbdbd',
+                                        color: '#212121',
+                                    },
+                                }}
+                            >
+                                <Stack direction="row" spacing={2} alignItems="center">
+                                    {item.badgeContent ? (
+                                        <Badge
+                                            color="secondary"
+                                            badgeContent={item.badgeContent}
+                                            max={20}
+                                            sx={{
+                                                '.MuiBadge-dot': {
+                                                    backgroundColor: '#9e9e9e',
+                                                },
+                                            }}
+                                        >
+                                            {item.icon}
+                                        </Badge>
+                                    ) : (
+                                        item.icon
+                                    )}
+                                    <ListItemText
+                                        primary={item.text}
                                         sx={{
-                                            '.MuiBadge-dot': {
-                                                backgroundColor: '#9e9e9e',
-                                            },
+                                            fontWeight: 600,
+                                            color: '#333',
                                         }}
-                                    >
-                                        {item.icon}
-                                    </Badge>
-                                ) : (
-                                    item.icon
-                                )}
-                                <ListItemText
-                                    primary={item.text}
-                                    sx={{
-                                        fontWeight: 600,
-                                        color: '#333',
-                                    }}
-                                />
-                            </Stack>
-                        </ListItemButton>
-                    </ListItem>
-                ))}
+                                    />
+                                </Stack>
+                            </ListItemButton>
+                        </ListItem>
+                    )
+                })}
             </List>
         </div>
     );
