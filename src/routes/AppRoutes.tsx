@@ -9,6 +9,8 @@ import OrderPage from '../modules/seller/order/OrderPageContainer';
 import Dashboard from '../modules/seller/dashboard/Dashboard';
 import Home from '../modules/customer/home';
 import ProductManagement from '../modules/seller/productManagement/ProductManagement';
+import Register from '../modules/auth/Register';
+import ForgetPassword from '../modules/auth/ForgetPassword';
 
 
 const router = createBrowserRouter([
@@ -59,6 +61,8 @@ const router = createBrowserRouter([
     element: <AuthLayout />,
     children: [
       { index: true, element: <Login /> },
+      { path: 'register', element: <Register /> },
+      { path: 'forget-password', element: <ForgetPassword /> }
     ]
   }
 ]);
