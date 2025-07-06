@@ -11,6 +11,7 @@ import Home from '../modules/customer/home';
 import ProductManagement from '../modules/seller/productManagement/ProductManagement';
 import Register from '../modules/auth/Register';
 import ForgetPassword from '../modules/auth/ForgetPassword';
+import MailVerify from '../modules/auth/MailVerify';
 
 
 const router = createBrowserRouter([
@@ -62,7 +63,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Login /> },
       { path: 'register', element: <Register /> },
-      { path: 'forget-password', element: <ForgetPassword /> }
+      { path: 'forget-password', element: <ForgetPassword /> },
+      { path: 'mail-Verify', element: <MailVerify /> }
     ]
   }
 ]);
