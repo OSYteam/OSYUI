@@ -1,100 +1,91 @@
-import { AppBar, Avatar, Button, IconButton, Menu, MenuItem, styled, Toolbar, Tooltip, Typography } from "@mui/material";
-import { deepOrange } from "@mui/material/colors";
-import { MouseEvent, useState } from "react";
+import { useState, MouseEvent } from "react";
+import {
+    AppBar,
+    Badge,
+    IconButton,
+    Menu,
+    MenuItem,
+    Toolbar,
+    Typography,
+} from "@mui/material";
 import { MdMenu } from "react-icons/md";
-import { logout } from "../../../modules/auth/service/auth.service";
-import { useAuthStore } from "../../../modules/auth/store/authStore";
+import { FaShoppingCart } from "react-icons/fa";
 
 const Appbar = () => {
-
-    const clearAuth = useAuthStore(state => state.clearAuth);
-
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
-    const handleClick = (event: MouseEvent<HTMLElement>) => {
+    const handleMenuClick = (event: MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
-    const handleLogout = () => {
 
-        logout()
-            .then(() => {
-
-                clearAuth();
-
-                window.location.href = "/auth";
-            })
-            .catch(err => {
-                alert(err);
-            })
-
+    const handleMenuClose = () => {
         setAnchorEl(null);
     };
 
-    const StyledToolbar = styled(Toolbar)(() => ({
-        // backgroundColor: "red",
-        // bgcolor: "pink",
-        // height: 20,
-        alignItems: 'flex-start',
-        '@media all': {
-            minHeight: 20,
-        }
-    }));
-
-
     return (
+        <>
+            <AppBar
+                position="static"
+                sx={{
+                    color: "black",
+                    boxShadow: "none",
+                    backdropFilter: "blur(8px)",
+                    px: 0, // horizontal padding
+                    mx: 0,
+                }}
+            >
+                <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
+                    <IconButton
+                        color="inherit"
+                        onClick={handleMenuClick}
+                        aria-controls={open ? "hamburger-menu" : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open ? "true" : undefined}
+                        size="large"
+                    >
+                        <MdMenu size={24} />
+                    </IconButton>
 
+                    <Typography
+                        variant="h5"
+                        component="div"
+                        sx={{ fontWeight: "bold", textAlign: "center", flexGrow: 1 }}
+                    >
+                        Ozzy Bazaar
+                    </Typography>
 
-        <AppBar sx={{ boxShadow: "none" }} >
+                    <IconButton color="inherit" size="large">
+                        <Badge badgeContent={3} color="error">
+                            <FaShoppingCart size={20} />
+                        </Badge>
+                    </IconButton>
+                </Toolbar>
+            </AppBar>
 
-            <StyledToolbar>
-                <IconButton
-                    size="large"
-                    edge="start"
-                    color="inherit"
-                    aria-label="open drawer"
-                    sx={{ mr: 2 }}
-                >
-                    <MdMenu />
-                </IconButton>
-                <Typography
-                    variant="h5"
-                    noWrap
-                    component="div"
-                    sx={{ flexGrow: 1, alignSelf: 'flex-end' }}
-                >
-                    MUI
-                </Typography>
-
-                <Button
-                    id="fade-button"
-                    aria-controls={open ? 'fade-menu' : undefined}
-                    // aria-haspopup="true"
-                    aria-expanded={open ? 'true' : undefined}
-                    onClick={handleClick}
-                    sx={{ alignSelf: "center" }}
-                >
-                    <Tooltip title="Account settings">
-
-                        <Avatar sx={{ bgcolor: deepOrange[400], width: 32, height: 32 }} >N</Avatar>
-                    </Tooltip>
-                </Button>
-
-                <Menu
-                    id="fade-menu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={() => { setAnchorEl(null) }}
-                >
-                    <MenuItem onClick={() => { }}>Profile</MenuItem>
-                    <MenuItem onClick={() => { }}>My account</MenuItem>
-                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                </Menu>
-            </StyledToolbar>
-
-        </AppBar >
-
+            <Menu
+                id="hamburger-menu"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleMenuClose}
+                MenuListProps={{
+                    "aria-labelledby": "hamburger-button",
+                }}
+                anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                }}
+                transformOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                }}
+            >
+                <MenuItem onClick={handleMenuClose}>Anasayfa</MenuItem>
+                <MenuItem onClick={handleMenuClose}>Hakkımızda</MenuItem>
+                <MenuItem onClick={handleMenuClose}>İletişim</MenuItem>
+            </Menu>
+        </>
     );
-}
+};
 
 export default Appbar;

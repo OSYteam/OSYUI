@@ -1,5 +1,7 @@
+import ProductList from "../../layouts/rootLayout/components/ProductList"
+
 const Home = () => {
-    return <div>Hello Customer 🎉</div>;
+    return <ProductList />
 };
 
 export default Home;
