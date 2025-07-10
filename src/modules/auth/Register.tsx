@@ -3,6 +3,8 @@ import {
     Checkbox,
     FormControlLabel,
     Stack,
+    Tab,
+    Tabs,
     TextField,
     Typography,
 } from '@mui/material';
@@ -26,12 +28,12 @@ const Register = () => {
         acceptTerms: false,
     });
 
+    const [userType, setUserType] = useState<'customer' | 'seller'>('customer');
     const navigate = useNavigate();
 
 
 
     const handleRegister = async () => {
-
 
         const dto: RegisterDto = {
             email: formData.email,
@@ -39,8 +41,8 @@ const Register = () => {
             name: formData.name,
             surname: formData.surname,
             phone: formData.phone,
-        };
-
+            roles: userType == 'customer' ? [1] : [0]
+        }
         try {
             await register(dto);
         } catch (error) {
@@ -50,7 +52,31 @@ const Register = () => {
     };
 
     return (
-        <Stack spacing={0.5} alignItems="center" justifyContent="center" sx={{}}>
+        <Stack spacing={1} alignItems="center" justifyContent="center" sx={{}}>
+
+            <Tabs
+                value={userType}
+                onChange={(e, newValue) => setUserType(newValue)}
+                textColor="inherit"
+                indicatorColor="secondary"
+                centered
+                sx={{
+                    '& .MuiTab-root': {
+                        color: 'black',
+                        fontWeight: 'bold',
+                    },
+                    '& .Mui-selected': {
+                        color: 'black',
+                    },
+                    '& .MuiTabs-indicator': {
+                        backgroundColor: 'black',
+                    },
+                }}
+            >
+                <Tab label="Müşteri" value="customer" />
+                <Tab label="Satıcı" value="seller" />
+            </Tabs>
+
             <Typography variant="h5" fontWeight="bold" sx={{ color: 'black' }}>
                 Kayıt Ol
             </Typography>

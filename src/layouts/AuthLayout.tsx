@@ -55,8 +55,7 @@ const AuthLayout = () => {
           border: 1,
           borderRadius: 3,
           width: { xs: '100%', sm: 350, md: 400 },
-          height: { xs: 'auto', md: 550 },
-          p: 3,
+          // height: { xs: 'auto', md: 550 },
         }}
       >
         <Outlet />
