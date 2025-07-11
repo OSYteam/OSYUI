@@ -1,13 +1,26 @@
 import { Box, Container } from '@mui/material';
-import { useAuthStore } from '../modules/auth/store/authStore';
-import { Navigate, Outlet } from 'react-router-dom';
+// import { useAuthStore } from '../modules/auth/store/authStore';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import logo2 from '../assets/images/06.jpg'
+import { useAuthStore } from '../modules/auth/store/authStore';
+import { useEffect } from 'react';
 
 const AuthLayout = () => {
 
-  const isAuthenticated = useAuthStore(state => state.isAuthenticated);
+  // const isAuthenticated = useAuthStore(state => state.isAuthenticated);
 
-  if (isAuthenticated) return <Navigate to="/seller" />;
+  // if (isAuthenticated) return <Navigate to="/seller" />;
+  const navigate = useNavigate();
+  const { isAuthenticated, userDto } = useAuthStore();
+  useEffect(() => {
+    if (isAuthenticated && userDto) {
+      if (userDto.role[0] === 0) {
+        navigate('/seller');
+      } else if (userDto.role[0] === 1) {
+        navigate('/c');
+      }
+    }
+  }, [isAuthenticated, userDto]);
 
   return (
     <Container

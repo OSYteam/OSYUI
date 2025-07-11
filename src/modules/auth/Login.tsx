@@ -8,20 +8,43 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { apiLogin } from '../auth/service/auth.service'
+import { LoginDto } from './dto/LoginDto';
 import { useAuthStore } from './store/authStore';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+
 
 const Login = () => {
-  const login = useAuthStore((state) => state.login);
+  // const { isAuthenticated, userDto } = useAuthStore();
+
+  // const navigate = useNavigate();
+
+  // useEffect(() => {
+  //   if (isAuthenticated && userDto) {
+  //     if (userDto.role[0] === 0) {
+  //       navigate('/seller');
+  //     } else if (userDto.role[0] === 1) {
+  //       navigate('/c');
+  //     }
+  //   }
+  // }, [isAuthenticated, userDto]);
 
   const [userType, setUserType] = useState<'customer' | 'seller'>('customer');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
 
-    alert(userType + " SEÇİLİ OLAN GİRİŞ TİPİ");
+    const dto: LoginDto = {
+      email: formData.email,
+      password: formData.password
+    }
 
-    // login();
+    await apiLogin(dto);
+
   };
 
   return (
@@ -29,7 +52,7 @@ const Login = () => {
 
       <Tabs
         value={userType}
-        onChange={(e, newValue) => setUserType(newValue)}
+        onChange={(e, newValue: 'customer' | 'seller') => setUserType(newValue)}
         textColor="inherit"
         indicatorColor="secondary"
         centered
@@ -58,6 +81,8 @@ const Login = () => {
         label="E-Posta"
         variant="outlined"
         fullWidth
+        value={formData.email}
+        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
         InputLabelProps={{
           sx: {
             color: 'black',
@@ -91,6 +116,8 @@ const Login = () => {
         autoComplete="current-password"
         variant="outlined"
         fullWidth
+        value={formData.password}
+        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
         InputLabelProps={{
           sx: {
             color: 'black',
