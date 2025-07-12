@@ -15,7 +15,7 @@ const initialUserDto: UserResponseDto = {
 interface AuthState {
   isAuthenticated: boolean;
   userDto: UserResponseDto;
-  login: (user: UserResponseDto) => void;
+  setUserInformation: (user: UserResponseDto) => void;
   logout: () => void;
 }
 
@@ -23,7 +23,7 @@ export const useAuthStore = create<AuthState>()(
   immer((set) => ({
     isAuthenticated: initialAuth,
     userDto: initialUserDto,
-    login: (user: UserResponseDto) => {
+    setUserInformation: (user: UserResponseDto) => {
       set((state) => {
         state.userDto = user;
         state.isAuthenticated = true;

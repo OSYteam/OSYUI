@@ -17,12 +17,12 @@ export async function register(dto: RegisterDto): Promise<void> {
 
 }
 
-export async function apiLogin(dto: LoginDto): Promise<string> {
+export async function login(dto: LoginDto): Promise<string> {
     try {
         const { data } = await api.post('/auth/login', dto);
 
         const userDto: UserResponseDto = await getMe(data.accessToken);
-        authStore.login(userDto);
+        authStore.setUserInformation(userDto);
 
         return data.accessToken;
     } catch (error: any) {

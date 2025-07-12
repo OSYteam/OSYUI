@@ -6,5 +6,4 @@ export interface RegisterDto {
     name?: string;
     surname?: string;
     phone: string;
-    roles: UserRole[];
 }

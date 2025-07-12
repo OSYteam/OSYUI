@@ -1,4 +1,4 @@
-import ProductList from "../../layouts/rootLayout/components/ProductList"
+import ProductList from "./ProductList"
 
 const Home = () => {
     return <ProductList />

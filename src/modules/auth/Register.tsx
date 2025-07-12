@@ -40,8 +40,7 @@ const Register = () => {
             password: formData.password,
             name: formData.name,
             surname: formData.surname,
-            phone: formData.phone,
-            roles: userType == 'customer' ? [1] : [0]
+            phone: formData.phone
         }
         try {
             await register(dto);

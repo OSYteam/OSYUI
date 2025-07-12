@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { apiLogin } from '../auth/service/auth.service'
+import { login } from '../auth/service/auth.service'
 import { LoginDto } from './dto/LoginDto';
 import { useAuthStore } from './store/authStore';
 
@@ -43,7 +43,7 @@ const Login = () => {
       password: formData.password
     }
 
-    await apiLogin(dto);
+    await login(dto);
 
   };
 
