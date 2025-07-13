@@ -10,7 +10,7 @@ import { Outlet } from 'react-router-dom';
 import Appbar from '../sellerLayout/components/Appbar';
 
 import { FaSearch } from "react-icons/fa";
-import BottomNavBar from '../../common/components/BottomNavBar';
+import BottomNavBar from '../../modules/customer/component/BottomNavBar';
 
 
 //müşteri layout

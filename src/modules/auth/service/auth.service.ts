@@ -1,21 +1,11 @@
 import api from "../../../api/api";
 import { LoginDto } from "../dto/LoginDto";
-import { RegisterDto } from "../dto/RegisterDto";
 import { UserResponseDto } from "../dto/UserResponse";
 import { useAuthStore } from "../store/authStore";
 
+import { getMe } from '../../user/user.service'
+
 const authStore = useAuthStore.getState();
-
-export async function register(dto: RegisterDto): Promise<void> {
-    try {
-        const response = await api.post('/user/register', dto);
-        console.log("Kayıt başarılı:", response.data);
-    } catch (error) {
-        console.error("Kayıt hatası:", error);
-        throw error;
-    }
-
-}
 
 export async function login(dto: LoginDto): Promise<string> {
     try {
@@ -31,23 +21,6 @@ export async function login(dto: LoginDto): Promise<string> {
         throw error;
     }
 }
-
-async function getMe(accessToken: string): Promise<any> {
-    const headers = {
-        Authorization: `Bearer ${accessToken}`
-    };
-
-    try {
-        const { data } = await api.get('/user/getme', { headers });
-        // console.log(data);
-        return data;
-
-    } catch (error) {
-        console.error("getMe hatası:", error);
-        throw error;
-    }
-}
-
 
 export async function logout(): Promise<void> {
     const { data } = await api.post('/auth/logout');

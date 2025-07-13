@@ -1,5 +1,3 @@
-import { UserRole } from "../../../common/enums/UserRole";
-
 export interface RegisterDto {
     email: string;
     password: string;

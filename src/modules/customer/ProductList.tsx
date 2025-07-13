@@ -1,9 +1,9 @@
 import Product from './Product'
 
-import salca from '../../../assets/images/products/salca.png'
-import asmaYapragi from '../../../assets/images/products/asmayaprak.jpg'
-import kuruKayisi from '../../../assets/images/products/kurukayısı.jpg'
-import pekmez from '../../../assets/images/products/pekmez.png'
+import salca from '../../assets/images/products/salca.png'
+import pekmez from '../../assets/images/products/pekmez.png'
+import kuruKayisi from '../../assets/images/products/kurukayısı.jpg'
+import asmaYapragi from '../../assets/images/products/asmayaprak.jpg'
 import { Box } from '@mui/material'
 
 const mockProducts = [

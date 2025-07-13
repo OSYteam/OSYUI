@@ -16,19 +16,6 @@ import { useAuthStore } from './store/authStore';
 
 
 const Login = () => {
-  // const { isAuthenticated, userDto } = useAuthStore();
-
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (isAuthenticated && userDto) {
-  //     if (userDto.role[0] === 0) {
-  //       navigate('/seller');
-  //     } else if (userDto.role[0] === 1) {
-  //       navigate('/c');
-  //     }
-  //   }
-  // }, [isAuthenticated, userDto]);
 
   const [userType, setUserType] = useState<'customer' | 'seller'>('customer');
   const [formData, setFormData] = useState({

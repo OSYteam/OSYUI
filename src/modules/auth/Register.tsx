@@ -9,10 +9,11 @@ import {
     Typography,
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import { register } from '../auth/service/auth.service';
+import { assignRole, register } from '../user/user.service';
 import { useState } from 'react';
 import { RegisterDto } from './dto/RegisterDto';
-
+import { UserRole } from '../../common/enums/UserRole';
+import { CreateUserRoleDto } from '../user/dto/CreateUserRoleDto';
 
 
 const Register = () => {
@@ -32,7 +33,6 @@ const Register = () => {
     const navigate = useNavigate();
 
 
-
     const handleRegister = async () => {
 
         const dto: RegisterDto = {
@@ -43,7 +43,18 @@ const Register = () => {
             phone: formData.phone
         }
         try {
-            await register(dto);
+
+            const roleIndex = userType === 'customer' ? UserRole.CUSTOMER : UserRole.SELLER;
+
+            const userId = await register(dto);
+
+            const roleDto: CreateUserRoleDto = {
+                userId,
+                roles: [roleIndex]
+            }
+
+            await assignRole(roleDto);
+
         } catch (error) {
             console.error(error);
             alert("Register TSX Kayıt işlemi başarısız oldu");
