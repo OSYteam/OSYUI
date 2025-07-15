@@ -13,7 +13,7 @@ import {
 import { ChangeEvent, useState } from 'react'
 import { ProductStatus } from '../enum/productStatus'
 
-const attributes = {
+const mockAttributes = {
     color: ['Red', 'Blue', 'Gray'],
     size: ['S', 'M', 'L', 'XL']
 }
@@ -62,41 +62,10 @@ const VariantForm = () => {
     return (
         <Box sx={{ mt: 4, p: 2, border: '1px solid #ccc', borderRadius: 2, width: '100%', backgroundColor: '#fafafa' }}>
             <Typography variant='h6'>Varyant Bilgileri</Typography>
-            <Stack spacing={2} sx={{ mt: 2 }} >
 
-                <Stack direction="row" spacing={2}>
-                    <TextField
-                        label="Varyant Değeri"
-                        variant="outlined"
-                        sx={{ width: '450px' }}
-                    />
-                    <TextField
-                        label="Stok"
-                        type="number"
-                        variant="outlined"
-                        sx={{ width: '100px' }}
-                    />
-                    <TextField
-                        label="Fiyat"
-                        type="number"
-                        variant="outlined"
-                        sx={{ width: '100px' }}
-                    />
-
-                    <FormControl sx={{ width: '200px' }}>
-                        <InputLabel>Durum</InputLabel>
-                        <Select defaultValue="">
-
-                            {
-                                statusValues.map((status) => (
-                                    <MenuItem value={status}>
-                                        {statusLabels[status]}
-                                    </MenuItem>
-
-                                ))
-                            }
-                        </Select>
-                    </FormControl>
+            <Stack flexDirection='row'>
+                {/*Gorsel Yükleme Kısmı*/}
+                <Box>
                     <Box
                         sx={{
                             width: 200,
@@ -151,56 +120,106 @@ const VariantForm = () => {
                         </Button>
                     </Box>
 
-                </Stack>
-
-
-                {/* Attribute Seçimi */}
-                <FormControl fullWidth>
-                    <InputLabel>Attribute</InputLabel>
-                    <Select
-                        value={attribute}
-                        onChange={(e) => {
-                            setAttribute(e.target.value)
-                            setAttributeValue('')
-                        }}
+                </Box>
+                {/*Variant Bilgileri Kısmı*/}
+                <Box sx={{ ml: 2 }}>
+                    <Stack
+                        spacing={{ xs: 1, sm: 2 }}
+                        direction="row"
+                        useFlexGap
+                        sx={{ flexWrap: 'wrap' }}
                     >
-                        {Object.keys(attributes).map(attr => (
-                            <MenuItem key={attr} value={attr}>{attr}</MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
 
-                {attribute && (
-                    <FormControl fullWidth>
-                        <InputLabel>Attribute Değeri</InputLabel>
-                        <Select
-                            value={attributeValue}
-                            onChange={(e) => setAttributeValue(e.target.value)}
-                        >
-                            {attributes[attribute as keyof typeof attributes].map((val) => (
-                                <MenuItem key={val} value={val}>{val}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                )}
-
-                {/* {attribute && attributeValue && (
-                    <Button variant="contained" onClick={handleAddAttribute}>
-                        Ekle
-                    </Button>
-                )} */}
-
-                {/* Eklenen attribute-value çiftlerini göster */}
-                {/* <Stack direction="row" spacing={1} flexWrap="wrap">
-                    {attributePairs.map((pair, index) => (
-                        <Chip
-                            key={index}
-                            label={`${pair.key}: ${pair.value}`}
-                            onDelete={() => handleRemoveAttribute(index)}
-                            sx={{ m: 0.5 }}
+                        <TextField
+                            label="Varyant Değeri"
+                            variant="outlined"
+                            sx={{ width: '450px' }}
                         />
-                    ))}
-                </Stack> */}
+                        <TextField
+                            label="Stok"
+                            type="number"
+                            variant="outlined"
+                            sx={{ width: '100px' }}
+                        />
+                        <TextField
+                            label="Fiyat"
+                            type="number"
+                            variant="outlined"
+                            sx={{ width: '100px' }}
+                        />
+
+                        <FormControl sx={{ width: '200px' }}>
+                            <InputLabel>Durum</InputLabel>
+                            <Select defaultValue="">
+
+                                {
+                                    statusValues.map((status) => (
+                                        <MenuItem value={status}>
+                                            {statusLabels[status]}
+                                        </MenuItem>
+
+                                    ))
+                                }
+                            </Select>
+                        </FormControl>
+
+
+                    </Stack>
+
+                    <Stack
+                        spacing={{ xs: 1, sm: 2 }}
+                        alignItems='center'
+                        direction="row"
+                        useFlexGap
+                        sx={{ flexWrap: 'wrap', mt: 3 }}>
+                        <FormControl sx={{ width: '300px' }}>
+                            <InputLabel>Attribute</InputLabel>
+                            <Select
+                                value={attribute}
+                                onChange={(e) => {
+                                    setAttribute(e.target.value)
+                                    setAttributeValue('')
+                                }}
+                            >
+                                {Object.keys(mockAttributes).map(attr => (
+                                    <MenuItem key={attr} value={attr}>{attr}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+
+                        {attribute && (
+                            <FormControl sx={{ width: '300px' }}>
+                                <InputLabel>Attribute Değeri</InputLabel>
+                                <Select
+                                    value={attributeValue}
+                                    onChange={(e) => setAttributeValue(e.target.value)}
+                                >
+                                    {mockAttributes[attribute as keyof typeof mockAttributes].map((val) => (
+                                        <MenuItem key={val} value={val}>{val}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        )}
+
+
+                        {attribute && attributeValue && (
+                            <Button variant="contained" color='success' onClick={handleAddAttribute}>
+                                Ekle
+                            </Button>
+                        )}
+                    </Stack>
+
+                    <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mt: 2 }}>
+                        {attributePairs.map((pair, index) => (
+                            <Chip
+                                key={index}
+                                label={`${pair.key}: ${pair.value}`}
+                                onDelete={() => handleRemoveAttribute(index)}
+                                sx={{ m: 0.5 }}
+                            />
+                        ))}
+                    </Stack>
+                </Box>
             </Stack>
         </Box>
     )
