@@ -6,11 +6,11 @@ type ProductProps = {
     id: number;
     name: string;
     description: string;
-    price: number;
+    discount: number;
     imageUrl: string;
 };
 
-function Product({ id, name, description, price, imageUrl }: ProductProps) {
+function Product({ id, name, description, discount, imageUrl }: ProductProps) {
 
     const handleClick = (id: number) => {
         alert(id + " ID'ye sahip ürünün detaylarını göster");
@@ -96,7 +96,7 @@ function Product({ id, name, description, price, imageUrl }: ProductProps) {
                         color: '#000',
                     }}
                 >
-                    {price} ₺
+                    {discount} %
                 </Typography>
             </Box>
         </Container>

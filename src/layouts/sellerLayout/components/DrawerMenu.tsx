@@ -12,7 +12,11 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { FaBoxOpen, FaHome, FaNewspaper, FaProductHunt, FaReceipt } from 'react-icons/fa';
+import { AiOutlineProduct } from "react-icons/ai";
+import { IoSettingsOutline } from "react-icons/io5";
 import { MdBarChart, MdSettings } from 'react-icons/md';
+import { TbPackages } from "react-icons/tb";
+import { RiUserCommunityLine } from "react-icons/ri";
 import { NavLink } from 'react-router-dom';
 
 const drawerWidth = 200;
@@ -26,44 +30,44 @@ const DrawerMenu = () => {
 
     const menuContent = [
         {
-            text: 'Dashboard',
-            path: '/',
-            icon: <FaHome fontSize={25} />,
+            text: 'Ürünler',
+            path: '/seller',
+            icon: <AiOutlineProduct fontSize={30} />,
             // badgeContent: 5,
             visible: true,
         },
         {
             text: 'Siparişlerim',
             path: 'order',
-            icon: <FaNewspaper fontSize={25} />,
+            icon: <TbPackages fontSize={30} />,
             badgeContent: 5,
             visible: true,
         },
 
         {
-            text: 'Ürün Yönetimi',
-            path: 'product',
-            icon: <FaBoxOpen fontSize={25} />,
-            badgeContent: 5,
+            text: 'Müşteriler',
+            path: 'customer',
+            icon: <RiUserCommunityLine fontSize={30} />,
+            // badgeContent: 5,
             visible: true,
         },
         {
             text: 'İstatistik',
             path: '/seller/stats',
-            icon: <MdBarChart fontSize={25} />,
+            icon: <MdBarChart fontSize={30} />,
             visible: false,
         },
         {
             text: 'Bilgi Formları',
             path: '/seller/receipt',
-            icon: <FaReceipt fontSize={25} />,
+            icon: <FaReceipt fontSize={30} />,
             visible: false,
         },
         {
             text: 'Ayarlar',
             path: '/seller/settings',
-            icon: <MdSettings fontSize={25} />,
-            visible: false,
+            icon: <IoSettingsOutline fontSize={30} />,
+            visible: true,
 
         },
     ];
@@ -72,7 +76,7 @@ const DrawerMenu = () => {
         <div>
             <Toolbar sx={{ backgroundColor: '#f4f4f4', padding: '20px' }}>
                 <Typography variant="h6" noWrap component="div" sx={{ color: '#333', fontWeight: 'bold' }}>
-                    Abc Zeytinyağları
+                    OZY LOGO
                 </Typography>
             </Toolbar>
             <List sx={{ paddingTop: '20px' }}>
@@ -84,7 +88,7 @@ const DrawerMenu = () => {
                         <ListItem key={item.text} disablePadding>
                             <ListItemButton
                                 component={NavLink}
-                                to={item.path}
+                                to={`${item.path}`}
                                 sx={{
                                     color: '#333',
                                     borderRadius: '10px',

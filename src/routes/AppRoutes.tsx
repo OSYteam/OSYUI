@@ -12,6 +12,7 @@ import Register from '../modules/auth/Register';
 import ForgetPassword from '../modules/auth/ForgetPassword';
 import MailVerify from '../modules/auth/MailVerify';
 import Dashboard from '../modules/seller/dashboard/Dashboard';
+import CreateProduct from '../modules/seller/productManagement/components/CreateProduct';
 
 
 const router = createBrowserRouter([
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
           { index: true, element: <Dashboard /> },
           { path: 'order', element: <OrderPage /> },
           { path: 'product', element: <ProductManagement /> },
+          { path: 'createProduct', element: <CreateProduct /> },
 
         ]
       }
