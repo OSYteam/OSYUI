@@ -49,7 +49,7 @@ export async function createProduct(accessToken: string, dto: CreateProductDto):
         return response.data;
 
     } catch (error) {
-        console.error(`Delete Product Error : ${error}`);
+        console.error(`Create Product Error : ${error}`);
         throw error;
     }
 }
@@ -77,5 +77,27 @@ export async function deleteVariant(accessToken: string, id: string): Promise<nu
 }
 
 
-
 //#endregion 
+
+
+//#region --- MEDIA ---
+export async function uploadVariantImage(accessToken: string, vId: string, image: File): Promise<string> {
+
+    try {
+
+        const formData = new FormData();
+        formData.append("file", image);
+
+        const headers = {
+            Authorization: `Bearer ${accessToken}`,
+            'Content-Type': 'multipart/form-data'
+        };
+
+        const response = await api.post(`media/variant/${vId}`, formData, { headers })
+        return response.data;
+    } catch (error) {
+        console.error(`Delete Variant Error : ${error}`);
+        throw error;
+    }
+}
+//#endregion

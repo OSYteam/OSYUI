@@ -2,9 +2,31 @@ import { Box, Stack, TextField, Typography, Button } from '@mui/material'
 import { createRef, useRef, useState } from 'react'
 import VariantForm from './VariantForm'
 import { GoPlus } from 'react-icons/go'
+import { CreateProductDto, CreateProductVariantDto } from '../dto/CreateProductDto'
+import { createProduct, getProducts, uploadVariantImage } from '../../service/seller.service'
+import { useAuthStore } from '../../../auth/store/authStore'
+import { ProductResponseDto } from '../dto/ProducResponseDto'
+
+import Backdrop from '@mui/material/Backdrop';
+import { FaSpinner } from 'react-icons/fa';
+
+import '../../../../App.css'
+import { useProductStore } from '../../store/productStore'
+import { useNavigate } from 'react-router-dom'
+
 
 function CreateProduct() {
     const [variantForms, setVariantForms] = useState<number[]>([])
+    const [variants, setVariants] = useState<CreateProductVariantDto[]>([]);
+    const [variantImages, setVariantImages] = useState<(File | null)[]>([]);
+
+    const [loading, setLoading] = useState(false);
+
+    const { setProduct } = useProductStore();
+
+    const navigate = useNavigate();
+
+    const { accessToken } = useAuthStore();
 
     const [productData, setProductData] = useState({
         name: '',
@@ -16,7 +38,75 @@ function CreateProduct() {
     const handleAddVariant = () => {
         const newId = Date.now();
         setVariantForms(prev => [...prev, newId]);
+        setVariants(prev => [...prev, {
+            stock: 0,
+            price: 0,
+            status: 0,
+            attributes: [],
+            imageUrl: ''
+        }]);
+
+        setVariantImages(prev => [...prev, null]);
     }
+
+    const handleVariantChange = (id: number, data: CreateProductVariantDto) => {
+        const index = variantForms.findIndex(vId => vId === id);
+        if (index !== -1) {
+            const newVariants = [...variants];
+            newVariants[index] = data;
+            setVariants(newVariants);
+        }
+    };
+
+    const handleRemoveVariant = (id: number) => {
+        const index = variantForms.findIndex(vId => vId === id);
+        if (index !== -1) {
+            setVariantForms(prev => prev.filter(vId => vId !== id));
+            setVariants(prev => prev.filter((_, i) => i !== index));
+        }
+    };
+
+    const handleSubmit = async () => {
+
+        setLoading(true);
+
+
+        const payload: CreateProductDto = {
+            name: productData.name,
+            desc: productData.desc,
+            discount: productData.discount,
+            variants: variants
+        };
+
+        console.log('API’ye gönderilecek DTO:', payload);
+
+        try {
+            const response = await createProduct(accessToken, payload) as ProductResponseDto;
+
+            if (response.variants && response.variants.length > 0) {
+                await Promise.all(
+                    response.variants.map(async (variant, index) => {
+                        const file = variantImages[index];
+                        if (file) {
+                            try {
+                                await uploadVariantImage(accessToken, variant.id, file);
+                            } catch (err) {
+                                console.error(`Varyant ${variant.id} için görsel yüklenemedi`, err);
+                            }
+                        }
+                    })
+                );
+            }
+
+        } catch (err) {
+            console.error("Ürün oluşturma hatası:", err);
+        } finally {
+            setLoading(false);
+            const products = await getProducts(accessToken);
+            setProduct(products);
+            navigate('/seller');
+        }
+    };
 
 
     return (
@@ -92,7 +182,21 @@ function CreateProduct() {
 
             <Stack spacing={3} sx={{ mt: 4 }}>
                 {variantForms.map(id => (
-                    <VariantForm key={id} />
+                    <VariantForm key={id}
+                        id={id}
+                        onChange={handleVariantChange}
+                        onRemove={handleRemoveVariant}
+                        onImageChange={(id, file) => {
+                            const index = variantForms.findIndex(vId => vId === id);
+                            if (index !== -1) {
+                                setVariantImages(prev => {
+                                    const newImages = [...prev];
+                                    newImages[index] = file;
+                                    return newImages;
+                                });
+                            }
+                        }}
+                    />
                 ))}
 
                 <Button
@@ -111,9 +215,28 @@ function CreateProduct() {
                 >
                     Varyant Ekle
                 </Button>
+
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmit}
+                >
+                    Ürünü Kaydet
+                </Button>
             </Stack>
+
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1, flexDirection: 'column' }}
+                open={loading}
+            >
+                <FaSpinner size={50} className="spinner" />
+                <Typography sx={{ mt: 2 }}>Lütfen bekleyin, ürün kaydediliyor...</Typography>
+            </Backdrop>
+
         </Box>
     )
+
+
 }
 
 export default CreateProduct

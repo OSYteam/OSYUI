@@ -1,248 +1,187 @@
 import {
-    Box,
-    Stack,
-    TextField,
-    Typography,
-    Select,
-    MenuItem,
-    FormControl,
-    InputLabel,
-    Button,
-    Chip
+    Box, Stack, TextField, Typography, Select, MenuItem,
+    FormControl, InputLabel, Button, Chip
 } from '@mui/material'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { ProductStatus } from '../enum/productStatus'
 import { AttributeOptions } from '../../../../common/enums/Attributes'
+import { CreateProductVariantDto, CreateVariantAttributeInput } from '../dto/CreateProductDto'
 
-const VariantForm = () => {
+interface VariantFormProps {
+    id: number;
+    onChange: (id: number, data: CreateProductVariantDto) => void;
+    onRemove: (id: number) => void;
+    onImageChange: (id: number, file: File | null) => void;
+}
 
+const VariantForm = ({ id, onChange, onRemove, onImageChange }: VariantFormProps) => {
+    const [stock, setStock] = useState(0);
+    const [price, setPrice] = useState(0);
+    const [status, setStatus] = useState<ProductStatus>(ProductStatus.AVAILABLE);
+    const [image, setImage] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const [attributes, setAttributes] = useState<CreateVariantAttributeInput[]>([]);
+
+    const [attribute, setAttribute] = useState<number | undefined>();
+    const [attributeValue, setAttributeValue] = useState<number | undefined>();
+
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
-            setPreview(URL.createObjectURL(file));
+            setPreview(file ? URL.createObjectURL(file) : null);
+            setImage(file);
+            onImageChange(id, file);
         }
     };
 
+    const handleAddAttribute = () => {
+        if (attribute !== undefined && attributeValue !== undefined) {
+            setAttributes(prev => [...prev, {
+                attribute: attribute,
+                attributeVal: attributeValue
+            }]);
+            setAttribute(undefined);
+            setAttributeValue(undefined);
+        }
+    };
 
-    const statusValues = Object.keys(ProductStatus)
-        .filter((key) => !isNaN(Number(ProductStatus[key as keyof typeof ProductStatus])))
-        .map((key) => Number(ProductStatus[key as keyof typeof ProductStatus])) as ProductStatus[];
+    const handleRemoveAttribute = (index: number) => {
+        setAttributes(prev => prev.filter((_, i) => i !== index));
+    };
 
+    useEffect(() => {
+        onChange(id, {
+            stock,
+            price,
+            status,
+            attributes,
+        });
+    }, [stock, price, status, attributes]);
 
     const statusLabels: Record<ProductStatus, string> = {
         [ProductStatus.AVAILABLE]: 'Stok var',
         [ProductStatus.UNAVAILABLE]: 'Azalıyor',
         [ProductStatus.OUT_OF_STOCK]: 'Yok',
-
-    }
-
-    const [attribute, setAttribute] = useState<number | undefined>();
-    const [attributeValue, setAttributeValue] = useState<number | undefined>();
-
-    const [attributePairs, setAttributePairs] = useState<{ key: string, value: string }[]>([]);
-
-    const handleAddAttribute = () => {
-        if (attribute != null && attributeValue != null) {
-            // Seçilen attribute objesini bul
-            const attrObj = AttributeOptions.find(a => a.value === attribute);
-            // Seçilen attributeValue objesini bul
-            const valObj = attrObj?.values.find(v => v.value === attributeValue);
-
-            if (attrObj && valObj) {
-                setAttributePairs(prev => [...prev, { key: attrObj.label, value: valObj.label }]);
-                setAttribute(undefined);
-                setAttributeValue(undefined);
-            }
-        }
-    }
-
-    const handleRemoveAttribute = (index: number) => {
-        setAttributePairs(prev => prev.filter((_, i) => i !== index))
-    }
+    };
 
     return (
         <Box sx={{ mt: 4, p: 2, border: '1px solid #ccc', borderRadius: 2, width: '100%', backgroundColor: '#fafafa' }}>
-            <Typography variant='h6'>Varyant Bilgileri</Typography>
+            <Stack direction="row" justifyContent="space-between" alignItems="center">
+                <Typography variant='h6'>Varyant Bilgileri</Typography>
+                <Button color="error" onClick={() => onRemove(id)}>Sil</Button>
+            </Stack>
 
-            <Stack flexDirection='row'>
-                {/*Gorsel Yükleme Kısmı*/}
+            <Stack flexDirection='row' spacing={2} sx={{ mt: 2 }}>
+                {/* Görsel */}
                 <Box>
                     <Box
                         sx={{
-                            width: 200,
-                            height: 240,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            border: '1px dashed gray',
-                            borderRadius: 2,
-                            p: 1,
-                            overflow: 'hidden',
-                            backgroundColor: '#f0f0f0'
+                            width: 200, height: 240, display: 'flex', flexDirection: 'column',
+                            alignItems: 'center', justifyContent: 'space-between',
+                            border: '1px dashed gray', borderRadius: 2, p: 1, backgroundColor: '#f0f0f0'
                         }}
                     >
-                        <Box
-                            sx={{
-                                width: '100%',
-                                height: 160,
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                backgroundColor: '#fff',
-                                borderRadius: 1,
-                                overflow: 'hidden'
-                            }}
-                        >
+                        <Box sx={{
+                            width: '100%', height: 160, display: 'flex',
+                            alignItems: 'center', justifyContent: 'center',
+                            backgroundColor: '#fff', borderRadius: 1
+                        }}>
                             {preview ? (
-                                <img
-                                    src={preview}
-                                    alt="preview"
-                                    style={{
-                                        maxWidth: '100%',
-                                        maxHeight: '100%',
-                                        objectFit: 'contain',
-                                    }}
-                                />
+                                <img src={preview} alt="preview" style={{ maxWidth: '100%', maxHeight: '100%' }} />
                             ) : (
-                                <Typography variant="body2" color="text.secondary">
-                                    Görsel seçilmedi
-                                </Typography>
+                                <Typography variant="body2">Görsel seçilmedi</Typography>
                             )}
                         </Box>
-
-                        <Button
-                            variant="contained"
-                            component="label"
-                            sx={{ mt: 1, width: '100%' }}
-                        >
+                        <Button variant="contained" component="label" sx={{ mt: 1, width: '100%' }}>
                             Fotoğraf Seç
-                            <input hidden type="file" accept="image/*" onChange={handleChange} />
+                            <input hidden type="file" accept="image/*" onChange={handleFileChange} />
                         </Button>
                     </Box>
-
                 </Box>
-                {/*Variant Bilgileri Kısmı*/}
-                <Box sx={{ ml: 2 }}>
-                    <Stack
-                        spacing={{ xs: 1, sm: 2 }}
-                        direction="row"
-                        useFlexGap
-                        sx={{ flexWrap: 'wrap' }}
-                    >
 
+                {/* Bilgiler */}
+                <Box sx={{ flex: 1 }}>
+                    <Stack direction="row" spacing={2} flexWrap="wrap">
                         <TextField
                             label="Stok"
                             type="number"
-                            variant="outlined"
-                            sx={{ width: '100px' }}
+                            value={stock}
+                            onChange={(e) => setStock(Number(e.target.value))}
                         />
                         <TextField
                             label="Fiyat"
                             type="number"
-                            variant="outlined"
-                            sx={{ width: '100px' }}
+                            value={price}
+                            onChange={(e) => setPrice(Number(e.target.value))}
                         />
-
-                        <FormControl sx={{ width: '200px' }}>
+                        <FormControl>
                             <InputLabel>Durum</InputLabel>
-                            <Select defaultValue="">
-
-                                {
-                                    statusValues.map((status) => (
-                                        <MenuItem value={status}>
-                                            {statusLabels[status]}
-                                        </MenuItem>
-
-                                    ))
-                                }
+                            <Select value={status} onChange={(e) => setStatus(Number(e.target.value))}>
+                                {Object.values(ProductStatus).map((val) => (
+                                    <MenuItem key={val} value={val}>
+                                        {statusLabels[val as ProductStatus]}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
-
-
                     </Stack>
 
-                    <Stack
-                        spacing={{ xs: 1, sm: 2 }}
-                        alignItems='center'
-                        direction="row"
-                        useFlexGap
-                        sx={{ flexWrap: 'wrap', mt: 3 }}>
-                        <FormControl sx={{ width: '300px' }}>
+                    {/* Attribute Seçimi */}
+                    <Stack direction="row" spacing={2} mt={3} flexWrap="wrap">
+                        <FormControl sx={{ width: 250 }}>
                             <InputLabel>Attribute</InputLabel>
                             <Select
-                                value={attribute}
+                                value={attribute ?? ''}
                                 onChange={(e) => {
-                                    const value = e.target.value;
-                                    setAttribute(Number(value));
+                                    setAttribute(Number(e.target.value));
                                     setAttributeValue(undefined);
                                 }}
                             >
-                                {AttributeOptions.map((attr) => (
-                                    <MenuItem key={attr.value} value={attr.value}>
-                                        {attr.label}
-                                    </MenuItem>
+                                {AttributeOptions.map(opt => (
+                                    <MenuItem key={opt.value} value={opt.value}>{opt.label}</MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
 
                         {attribute !== undefined && (
-                            <FormControl sx={{ width: '300px' }}>
-                                <InputLabel>Attribute Değeri</InputLabel>
+                            <FormControl sx={{ width: 250 }}>
+                                <InputLabel>Değer</InputLabel>
                                 <Select
-                                    value={attributeValue}
-                                    onChange={(e) => {
-                                        const value = e.target.value;
-                                        setAttributeValue(Number(value));
-                                    }}
+                                    value={attributeValue ?? ''}
+                                    onChange={(e) => setAttributeValue(Number(e.target.value))}
                                 >
-                                    {AttributeOptions.find(attr => attr.value === Number(attribute))?.values.map(val => (
-                                        <MenuItem key={val.value} value={val.value}>
-                                            {val.label}
-                                        </MenuItem>
+                                    {AttributeOptions.find(attr => attr.value === attribute)?.values.map(val => (
+                                        <MenuItem key={val.value} value={val.value}>{val.label}</MenuItem>
                                     ))}
-
                                 </Select>
                             </FormControl>
                         )}
 
-
                         {attribute !== undefined && attributeValue !== undefined && (
-                            <Button
-                                onClick={handleAddAttribute}
-                                variant="contained"
-                                sx={{
-                                    background: 'linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)',
-                                    color: '#fff',
-                                    borderRadius: 3,
-                                    px: 3,
-                                    boxShadow: '0 3px 6px rgba(0,0,0,0.2)',
-                                    '&:hover': {
-                                        background: 'linear-gradient(135deg, #5b0dbb 0%, #1c63e0 100%)'
-                                    }
-                                }}
-                            >
-                                Ekle
-                            </Button>
+                            <Button variant="contained" onClick={handleAddAttribute}>Ekle</Button>
                         )}
-
                     </Stack>
 
-                    <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mt: 2 }}>
-                        {attributePairs.map((pair, index) => (
-                            <Chip
-                                key={index}
-                                label={`${pair.key}: ${pair.value}`}
-                                onDelete={() => handleRemoveAttribute(index)}
-                                sx={{ m: 0.5 }}
-                            />
-                        ))}
+                    {/* Chip gösterimi */}
+                    <Stack direction="row" spacing={1} flexWrap="wrap" mt={2}>
+                        {attributes.map((pair, i) => {
+                            const attrLabel = AttributeOptions.find(opt => opt.value === pair.attribute)?.label;
+                            const valLabel = AttributeOptions
+                                .find(opt => opt.value === pair.attribute)
+                                ?.values.find(v => v.value === pair.attributeVal)?.label;
+                            return (
+                                <Chip
+                                    key={i}
+                                    label={`${attrLabel}: ${valLabel}`}
+                                    onDelete={() => handleRemoveAttribute(i)}
+                                />
+                            )
+                        })}
                     </Stack>
                 </Box>
             </Stack>
         </Box>
-    )
-}
+    );
+};
 
-export default VariantForm
+export default VariantForm;
