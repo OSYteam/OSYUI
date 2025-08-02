@@ -1,22 +1,23 @@
 import { Box, Stack, TextField, Typography, Button } from '@mui/material'
-import { ChangeEvent, useState } from 'react'
+import { createRef, useRef, useState } from 'react'
 import VariantForm from './VariantForm'
 import { GoPlus } from 'react-icons/go'
 
 function CreateProduct() {
     const [variantForms, setVariantForms] = useState<number[]>([])
-    const [preview, setPreview] = useState<string | null>(null)
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if (file) {
-            setPreview(URL.createObjectURL(file))
-        }
-    }
+    const [productData, setProductData] = useState({
+        name: '',
+        desc: '',
+        discount: 0
+    });
+
 
     const handleAddVariant = () => {
-        setVariantForms(prev => [...prev, Date.now()])
+        const newId = Date.now();
+        setVariantForms(prev => [...prev, newId]);
     }
+
 
     return (
         <Box sx={{ width: '100%', p: 3 }}>
@@ -29,6 +30,8 @@ function CreateProduct() {
                     <TextField
                         label="Ad"
                         variant="outlined"
+                        value={productData.name}
+                        onChange={(e) => setProductData({ ...productData, name: e.target.value })}
                         InputLabelProps={{
                             sx: { color: 'black', '&.Mui-focused': { color: 'black' } },
                         }}
@@ -47,6 +50,8 @@ function CreateProduct() {
                         variant="outlined"
                         multiline
                         rows={4}
+                        value={productData.desc}
+                        onChange={(e) => setProductData({ ...productData, desc: e.target.value })}
                         InputLabelProps={{
                             sx: { color: 'black', '&.Mui-focused': { color: 'black' } },
                         }}
@@ -60,62 +65,29 @@ function CreateProduct() {
                             input: { color: 'black' },
                         }}
                     />
+
+                    <TextField
+                        label="İndirim"
+                        type="number"
+                        variant="outlined"
+                        value={productData.discount}
+                        onChange={(e) => setProductData({ ...productData, discount: Number(e.target.value) })}
+                        sx={{
+                            width: '100px',
+                            '& .MuiOutlinedInput-root': {
+                                '& fieldset': { borderColor: 'black' },
+                                '&:hover fieldset': { borderColor: 'black' },
+                                '&.Mui-focused fieldset': { borderColor: 'black' },
+                            },
+                            input: { color: 'black' },
+                        }}
+                        InputLabelProps={{
+                            sx: { color: 'black', '&.Mui-focused': { color: 'black' } },
+                        }}
+                    />
+
                 </Stack>
 
-                {/* Sağ: Görsel Alanı */}
-                <Box
-                    sx={{
-                        width: 200,
-                        height: 240,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        border: '1px dashed gray',
-                        borderRadius: 2,
-                        p: 1,
-                        overflow: 'hidden',
-                        backgroundColor: '#f0f0f0',
-                    }}
-                >
-                    <Box
-                        sx={{
-                            width: '100%',
-                            height: 160,
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: '#fff',
-                            borderRadius: 1,
-                            overflow: 'hidden',
-                        }}
-                    >
-                        {preview ? (
-                            <img
-                                src={preview}
-                                alt="preview"
-                                style={{
-                                    maxWidth: '100%',
-                                    maxHeight: '100%',
-                                    objectFit: 'contain',
-                                }}
-                            />
-                        ) : (
-                            <Typography variant="body2" color="text.secondary">
-                                Görsel seçilmedi
-                            </Typography>
-                        )}
-                    </Box>
-
-                    <Button
-                        variant="contained"
-                        component="label"
-                        sx={{ mt: 1, width: '100%' }}
-                    >
-                        Fotoğraf Seç
-                        <input hidden type="file" accept="image/*" onChange={handleChange} />
-                    </Button>
-                </Box>
             </Stack>
 
             <Stack spacing={3} sx={{ mt: 4 }}>

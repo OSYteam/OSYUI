@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { UserResponseDto } from '../dto/UserResponse';
-import { UserRole } from '../../../common/enums/UserRole';
 
 const initialAuth = localStorage.getItem('auth') === 'false';
 
@@ -14,24 +13,31 @@ const initialUserDto: UserResponseDto = {
 };
 interface AuthState {
   isAuthenticated: boolean;
+  accessToken: string;
   userDto: UserResponseDto;
   setUserInformation: (user: UserResponseDto) => void;
+  setAccessToken: (token: string) => void;
   logout: () => void;
 }
 
 export const useAuthStore = create<AuthState>()(
   immer((set) => ({
     isAuthenticated: initialAuth,
+    accessToken: '',
     userDto: initialUserDto,
     setUserInformation: (user: UserResponseDto) => {
       set((state) => {
         state.userDto = user;
         state.isAuthenticated = true;
-        console.log(state.userDto);
+
         localStorage.setItem('auth', 'true');
       });
     },
-
+    setAccessToken: (token) => {
+      set((state) => {
+        state.accessToken = token;
+      })
+    },
     logout: () => {
       set((state) => {
         state.userDto = initialUserDto;

@@ -8,14 +8,21 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import { login } from '../auth/service/auth.service'
 import { LoginDto } from './dto/LoginDto';
 import { useAuthStore } from './store/authStore';
+import { UserResponseDto } from './dto/UserResponse';
+import { getMe } from '../user/user.service';
+import { useProductStore } from '../seller/store/productStore';
+import { getProducts } from '../seller/service/seller.service';
 
 
 const Login = () => {
+
+  const { setAccessToken, setUserInformation } = useAuthStore();
+  const { setProduct } = useProductStore();
 
   const [userType, setUserType] = useState<'customer' | 'seller'>('customer');
   const [formData, setFormData] = useState({
@@ -30,7 +37,17 @@ const Login = () => {
       password: formData.password
     }
 
-    await login(dto);
+    const accessToken = await login(dto);
+
+    setAccessToken(accessToken);
+
+    const userDto: UserResponseDto = await getMe(accessToken);
+    setUserInformation(userDto);
+
+
+    // productsları çek
+    const products = await getProducts(accessToken);
+    setProduct(products);
 
   };
 

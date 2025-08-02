@@ -12,17 +12,11 @@ import {
 } from '@mui/material'
 import { ChangeEvent, useState } from 'react'
 import { ProductStatus } from '../enum/productStatus'
-
-const mockAttributes = {
-    color: ['Red', 'Blue', 'Gray'],
-    size: ['S', 'M', 'L', 'XL']
-}
-
+import { AttributeOptions } from '../../../../common/enums/Attributes'
 
 const VariantForm = () => {
 
     const [preview, setPreview] = useState<string | null>(null);
-
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -43,15 +37,23 @@ const VariantForm = () => {
 
     }
 
-    const [attribute, setAttribute] = useState('')
-    const [attributeValue, setAttributeValue] = useState('')
-    const [attributePairs, setAttributePairs] = useState<{ key: string, value: string }[]>([])
+    const [attribute, setAttribute] = useState<number | undefined>();
+    const [attributeValue, setAttributeValue] = useState<number | undefined>();
+
+    const [attributePairs, setAttributePairs] = useState<{ key: string, value: string }[]>([]);
 
     const handleAddAttribute = () => {
-        if (attribute && attributeValue) {
-            setAttributePairs(prev => [...prev, { key: attribute, value: attributeValue }])
-            setAttribute('')
-            setAttributeValue('')
+        if (attribute != null && attributeValue != null) {
+            // Seçilen attribute objesini bul
+            const attrObj = AttributeOptions.find(a => a.value === attribute);
+            // Seçilen attributeValue objesini bul
+            const valObj = attrObj?.values.find(v => v.value === attributeValue);
+
+            if (attrObj && valObj) {
+                setAttributePairs(prev => [...prev, { key: attrObj.label, value: valObj.label }]);
+                setAttribute(undefined);
+                setAttributeValue(undefined);
+            }
         }
     }
 
@@ -131,11 +133,6 @@ const VariantForm = () => {
                     >
 
                         <TextField
-                            label="Varyant Değeri"
-                            variant="outlined"
-                            sx={{ width: '450px' }}
-                        />
-                        <TextField
                             label="Stok"
                             type="number"
                             variant="outlined"
@@ -177,36 +174,59 @@ const VariantForm = () => {
                             <Select
                                 value={attribute}
                                 onChange={(e) => {
-                                    setAttribute(e.target.value)
-                                    setAttributeValue('')
+                                    const value = e.target.value;
+                                    setAttribute(Number(value));
+                                    setAttributeValue(undefined);
                                 }}
                             >
-                                {Object.keys(mockAttributes).map(attr => (
-                                    <MenuItem key={attr} value={attr}>{attr}</MenuItem>
+                                {AttributeOptions.map((attr) => (
+                                    <MenuItem key={attr.value} value={attr.value}>
+                                        {attr.label}
+                                    </MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
 
-                        {attribute && (
+                        {attribute !== undefined && (
                             <FormControl sx={{ width: '300px' }}>
                                 <InputLabel>Attribute Değeri</InputLabel>
                                 <Select
                                     value={attributeValue}
-                                    onChange={(e) => setAttributeValue(e.target.value)}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        setAttributeValue(Number(value));
+                                    }}
                                 >
-                                    {mockAttributes[attribute as keyof typeof mockAttributes].map((val) => (
-                                        <MenuItem key={val} value={val}>{val}</MenuItem>
+                                    {AttributeOptions.find(attr => attr.value === Number(attribute))?.values.map(val => (
+                                        <MenuItem key={val.value} value={val.value}>
+                                            {val.label}
+                                        </MenuItem>
                                     ))}
+
                                 </Select>
                             </FormControl>
                         )}
 
 
-                        {attribute && attributeValue && (
-                            <Button variant="contained" color='success' onClick={handleAddAttribute}>
+                        {attribute !== undefined && attributeValue !== undefined && (
+                            <Button
+                                onClick={handleAddAttribute}
+                                variant="contained"
+                                sx={{
+                                    background: 'linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)',
+                                    color: '#fff',
+                                    borderRadius: 3,
+                                    px: 3,
+                                    boxShadow: '0 3px 6px rgba(0,0,0,0.2)',
+                                    '&:hover': {
+                                        background: 'linear-gradient(135deg, #5b0dbb 0%, #1c63e0 100%)'
+                                    }
+                                }}
+                            >
                                 Ekle
                             </Button>
                         )}
+
                     </Stack>
 
                     <Stack direction="row" spacing={1} flexWrap="wrap" sx={{ mt: 2 }}>
