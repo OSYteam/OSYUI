@@ -9,6 +9,7 @@ import { useProductStore } from "../../store/productStore";
 import { useAuthStore } from "../../../auth/store/authStore";
 import { HttpStatusCode } from "axios";
 import ProductStatusCell from "./ProductStatusCell";
+import Variant from "./Variant";
 
 const ProductList = () => {
 
@@ -33,21 +34,10 @@ const ProductList = () => {
         const response = await deleteProduct(accessToken, productId);
         console.log(response);
 
-        //store'dan sil
+        // ALERT --------- productStore 'u güncellemedik. Orayı güncellemeyi unutmayalım ramsss
         if (response === HttpStatusCode.Ok)
             dropProduct(productId);
     }
-
-    const handleDeleteVariant = async (variantId: string) => {
-        const response = await deleteVariant(accessToken, variantId);
-        console.log(response);
-
-        // Variant silince store tarafında da sileceksin.
-
-        if (response === HttpStatusCode.Ok)
-            window.location.reload();
-    }
-
 
     const handleDialogResult = (result: ConfirmDialogResult) => {
         dialogSetOpen(false);
@@ -177,60 +167,15 @@ const ProductList = () => {
                                                     </TableHead>
                                                     <TableBody>
                                                         {product.variants.map((variant) => (
-                                                            <TableRow key={variant.id}>
-                                                                <TableCell>
-                                                                    <img
-                                                                        src={`${domainPath}/${variant.imageUrl}`}
-                                                                        style={{ width: "70px", borderRadius: "8px" }}
-                                                                    />
-                                                                </TableCell>
-                                                                <TableCell>{variant.price}₺</TableCell>
-                                                                <TableCell>{variant.stock} adet</TableCell>
-                                                                <TableCell>
-                                                                    <ProductStatusCell status={variant.status} />
-                                                                </TableCell>
-                                                                <TableCell>
-                                                                    <Stack direction="row" spacing={1}>
-                                                                        <Button
-                                                                            variant="contained"
-                                                                            size="small"
-                                                                            startIcon={<CiEdit />}
-                                                                            onClick={() => console.log("Düzenle tıklandı")}
-                                                                            sx={{
-                                                                                textTransform: "none",
-                                                                                bgcolor: "#1976d2",
-                                                                                color: "#fff",
-                                                                                borderRadius: "8px",
-                                                                                boxShadow: 1,
-                                                                                "&:hover": {
-                                                                                    bgcolor: "#1565c0",
-                                                                                },
-                                                                            }}
-                                                                        >
-                                                                            Düzenle
-                                                                        </Button>
-
-                                                                        <Button
-                                                                            variant="contained"
-                                                                            size="small"
-                                                                            startIcon={<MdDelete />}
-                                                                            onClick={() => handleDeleteVariant(variant.id)}
-                                                                            sx={{
-                                                                                textTransform: "none",
-                                                                                bgcolor: "#d32f2f",
-                                                                                color: "#fff",
-                                                                                borderRadius: "8px",
-                                                                                boxShadow: 1,
-                                                                                "&:hover": {
-                                                                                    bgcolor: "#b71c1c",
-                                                                                },
-                                                                            }}
-                                                                        >
-                                                                            Sil
-                                                                        </Button>
-                                                                    </Stack>
-                                                                </TableCell>
-                                                            </TableRow>
+                                                            <Variant
+                                                                key={variant.id}
+                                                                id={variant.id}
+                                                                price={variant.price}
+                                                                status={variant.status}
+                                                                stock={variant.stock}
+                                                                attributes={variant.attributes}
+                                                                imageUrl={variant.imageUrl}
+                                                            />
                                                         ))}
                                                     </TableBody>
                                                 </Table>
