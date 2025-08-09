@@ -5,13 +5,12 @@ import { MdColorLens, MdDelete } from 'react-icons/md';
 import ProductStatusCell from './ProductStatusCell';
 import { ProductVariantResponseDto } from '../../../../common/dto/ProductResponseDto';
 import { HttpStatusCode } from 'axios';
-import { deleteVariant, updateVariant } from '../../service/seller.service';
+import { deleteVariant } from '../../service/seller.service';
 import { useAuthStore } from '../../../auth/store/authStore';
 import { AttributeOptions } from '../../../../common/enums/Attributes';
 
 import { FaRulerCombined, FaTshirt, FaWeightHanging } from 'react-icons/fa';
 import UpdateVariant from './UpdateVariant';
-import { UpdateProductVariantDto } from '../dto/UpdateProductVariantDto';
 import { useProductStore } from '../../store/productStore';
 import LoadingSpinner from '../../../../common/components/LoadingSpinner';
 
@@ -42,7 +41,7 @@ function Variant({ dto, productId }: variantProps) {
 
 
     const { accessToken } = useAuthStore();
-    const { replaceVariantInProduct, removeVariantFromProduct } = useProductStore();
+    const { removeVariantFromProduct } = useProductStore();
 
     const handleDeleteVariant = async (variantId: string) => {
 
@@ -59,27 +58,12 @@ function Variant({ dto, productId }: variantProps) {
         }
     };
 
-    const handleUpdateVariant = async (dto: UpdateProductVariantDto) => {
-        setSpinner(true);
-
-        try {
-            const response = await updateVariant(accessToken, dto);
-            if (response) {
-                replaceVariantInProduct(productId, response);
-            }
-
-        } catch (error) {
-            console.error("Variant Update Hatası: ", error)
-        } finally {
-            setSpinner(false);
-        }
-    };
 
     return (
         <Fragment>
 
             <Backdrop open={spinner} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-                <LoadingSpinner size={50} text="Lütfen bekleyin, ürün kaydediliyor..." color="#fff" />
+                <LoadingSpinner size={50} text="Lütfen bekleyin, ürün kaydediliyor..." />
             </Backdrop>
 
 
@@ -186,7 +170,6 @@ function Variant({ dto, productId }: variantProps) {
             <UpdateVariant
                 open={openEdit}
                 onClose={() => setOpenEdit(false)}
-                onSave={handleUpdateVariant}
                 variant={{
                     id,
                     price,
@@ -195,7 +178,8 @@ function Variant({ dto, productId }: variantProps) {
                     attributes: attributes ?? [],
                     imageUrl
                 }}
-                loading={spinner}
+                productId={productId}
+                mode='update'
             />
 
 

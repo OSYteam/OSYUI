@@ -1,18 +1,16 @@
-import { Paper, Table, TableHead, TableRow, TableCell, TableBody, IconButton, Stack, Button, Typography, Box, Collapse, Backdrop } from "@mui/material";
+import { Paper, Table, TableHead, TableRow, TableCell, TableBody, IconButton, Stack, Button, Typography, Box, Collapse } from "@mui/material";
 import React, { useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import { ConfirmDialog, ConfirmDialogResult } from "../../../../common/components/ConfirmDialog";
-import { createVariant, deleteProduct } from '../../service/seller.service';
+import { deleteProduct } from '../../service/seller.service';
 import { useProductStore } from "../../store/productStore";
 import { useAuthStore } from "../../../auth/store/authStore";
 import { HttpStatusCode } from "axios";
 import Variant from "./Variant";
-import { UpdateProductDto, UpdateProductVariantDto } from "../dto/UpdateProductVariantDto";
 import UpdateVariant from "./UpdateVariant";
 import UpdateProduct from "./UpdateProduct";
-import LoadingSpinner from "../../../../common/components/LoadingSpinner";
 
 const ProductList = () => {
 
@@ -30,10 +28,6 @@ const ProductList = () => {
     const [openCreate, setOpenCreate] = useState(false);
 
     const [openEdit, setOpenEdit] = useState(false);
-    const [spinner, setSpinner] = useState(false);
-
-    const { appendVariantToProduct } = useProductStore();
-
 
     const toggleRow = (productId: string) => {
         setOpenProductId(openProductId === productId ? null : productId);
@@ -74,27 +68,7 @@ const ProductList = () => {
         }
     }
 
-    const handleCreateVariant = async (dto: UpdateProductVariantDto) => {
-        setSpinner(true);
 
-        try {
-            if (!selectedProduct) return;
-            const response = await createVariant(accessToken, selectedProduct, dto);
-            if (response) {
-                appendVariantToProduct(selectedProduct, response);
-            }
-            setOpenCreate(false);
-            setSelectedProduct(null);
-
-        } catch (error) {
-            console.error("Variant Create Hatası: ", error);
-        }
-        finally {
-            setSpinner(false);
-        }
-
-
-    };
 
     return (
         <Paper elevation={3} sx={{ width: '100%', overflowX: "auto" }}>
@@ -260,8 +234,8 @@ const ProductList = () => {
                         setOpenCreate(false);
                         setSelectedProduct(null);
                     }}
-                    onSave={handleCreateVariant}
-                    loading={spinner}
+                    mode="create"
+                    productId={selectedProduct}
                 />
             )}
 

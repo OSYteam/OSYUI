@@ -222,7 +222,7 @@ function CreateProduct() {
             </Stack>
 
             <Backdrop open={loading} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-                <LoadingSpinner size={50} text="Lütfen bekleyin, ürün kaydediliyor..." color="#fff" />
+                <LoadingSpinner size={50} text="Lütfen bekleyin, ürün kaydediliyor..." />
             </Backdrop>
 
         </Box>

@@ -18,9 +18,14 @@ import { VariantAttributeResponseDto } from "../dto/ProducResponseDto";
 import { AttributeOptions } from "../../../../common/enums/Attributes";
 import { UpdateProductVariantDto } from "../dto/UpdateProductVariantDto";
 import LoadingSpinner from "../../../../common/components/LoadingSpinner";
+import { useAuthStore } from "../../../auth/store/authStore";
+import { createVariant, updateVariant } from "../../service/seller.service";
+import { useProductStore } from "../../store/productStore";
+import { CreateProductVariantDto } from "../dto/CreateProductDto";
 
 interface UpdateVariantProps {
-    loading?: boolean;
+    mode: "create" | "update";
+    productId: string;
     open: boolean;
     onClose: () => void;
     variant?: {
@@ -31,14 +36,17 @@ interface UpdateVariantProps {
         attributes: VariantAttributeResponseDto[];
         imageUrl?: string;
     };
-    onSave: (dto: UpdateProductVariantDto) => Promise<void>;
 }
 
-const UpdateVariant: React.FC<UpdateVariantProps> = ({ open, onClose, variant, onSave, loading = false }) => {
+const UpdateVariant: React.FC<UpdateVariantProps> = ({ open, onClose, variant, productId, mode }) => {
     const [price, setPrice] = useState(variant?.price ?? 0);
     const [stock, setStock] = useState(variant?.stock ?? 0);
     const [status, setStatus] = useState(variant?.status ?? ProductStatus.AVAILABLE);
     const [attributes, setAttributes] = useState<VariantAttributeResponseDto[]>(variant?.attributes ?? []);
+    const { accessToken } = useAuthStore();
+    const { appendVariantToProduct, replaceVariantInProduct } = useProductStore();
+
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (variant) {
@@ -89,6 +97,7 @@ const UpdateVariant: React.FC<UpdateVariantProps> = ({ open, onClose, variant, o
     };
 
     const handleUpdateVariant = async () => {
+        setLoading(true);
         const dto: UpdateProductVariantDto = {
             id: variant?.id,
             price,
@@ -99,10 +108,47 @@ const UpdateVariant: React.FC<UpdateVariantProps> = ({ open, onClose, variant, o
                 attributeVal: Number(attr.attributeValue),
             })),
         };
+        try {
+            const response = await updateVariant(accessToken, dto);
+            if (response) {
+                replaceVariantInProduct(productId, response);
+            }
 
-        await onSave(dto);
-        onClose();
+        } catch (error) {
+            console.error("Variant Update Hatası: ", error)
+        } finally {
+            setLoading(false);
+            onClose();
+        }
     };
+
+    const handleCreateVariant = async () => {
+
+        const dto: CreateProductVariantDto = {
+            productId: productId,
+            price,
+            status,
+            stock,
+            attributes: attributes.map(attr => ({
+                attribute: Number(attr.attributeName),
+                attributeVal: Number(attr.attributeValue),
+            })),
+        };
+
+        setLoading(true);
+        try {
+            const response = await createVariant(accessToken, productId, dto);
+            if (response) {
+                appendVariantToProduct(productId, response);
+            }
+            onClose();
+        } catch (error) {
+            console.error("Variant Create Hatası: ", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
@@ -206,7 +252,17 @@ const UpdateVariant: React.FC<UpdateVariantProps> = ({ open, onClose, variant, o
                 <Button onClick={onClose} color="inherit">
                     İptal
                 </Button>
-                <Button onClick={handleUpdateVariant} variant="contained" color="primary">
+                <Button
+                    onClick={() => {
+                        if (mode === "create") {
+                            handleCreateVariant();
+                        } else if (mode === "update") {
+                            handleUpdateVariant();
+                        }
+                    }}
+                    variant="contained"
+                    color="primary"
+                >
                     Kaydet
                 </Button>
             </DialogActions>
@@ -214,10 +270,11 @@ const UpdateVariant: React.FC<UpdateVariantProps> = ({ open, onClose, variant, o
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.modal + 10 }}
                 open={loading}
             >
-                <LoadingSpinner size={50} text="Lütfen bekleyin..." color="#fff" />
+                <LoadingSpinner size={50} text="Lütfen bekleyin..." />
             </Backdrop>
         </Dialog>
     );
 };
 
 export default UpdateVariant;
+
