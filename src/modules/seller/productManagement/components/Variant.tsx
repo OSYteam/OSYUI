@@ -1,4 +1,4 @@
-import { TableRow, TableCell, Stack, Button, Chip } from '@mui/material';
+import { TableRow, TableCell, Stack, Button, Chip, Backdrop } from '@mui/material';
 import { Fragment, useState } from 'react';
 import { CiEdit } from 'react-icons/ci';
 import { MdColorLens, MdDelete } from 'react-icons/md';
@@ -13,6 +13,7 @@ import { FaRulerCombined, FaTshirt, FaWeightHanging } from 'react-icons/fa';
 import UpdateVariant from './UpdateVariant';
 import { UpdateProductVariantDto } from '../dto/UpdateProductVariantDto';
 import { useProductStore } from '../../store/productStore';
+import LoadingSpinner from '../../../../common/components/LoadingSpinner';
 
 const domainPath = "http://srv895462.hstgr.cloud";
 interface variantProps {
@@ -24,6 +25,9 @@ interface variantProps {
 function Variant({ dto, productId }: variantProps) {
 
     const [openEdit, setOpenEdit] = useState(false);
+
+    const [spinner, setSpinner] = useState(false);
+
     const { id, price, status, stock, imageUrl, attributes } = dto;
 
     const getAttributeIcon = (label?: string) => {
@@ -41,22 +45,44 @@ function Variant({ dto, productId }: variantProps) {
     const { replaceVariantInProduct, removeVariantFromProduct } = useProductStore();
 
     const handleDeleteVariant = async (variantId: string) => {
-        const status = await deleteVariant(accessToken, variantId);
 
-        if (status === HttpStatusCode.Ok)
-            removeVariantFromProduct(productId, variantId);
+        setSpinner(true);
+        try {
 
+            const status = await deleteVariant(accessToken, variantId);
+            if (status === HttpStatusCode.Ok)
+                removeVariantFromProduct(productId, variantId);
+
+            setSpinner(false);
+        } catch (error) {
+            console.error("Variant Silme Hatası:", error);
+        }
     };
 
-    const handleUpdate = async (dto: UpdateProductVariantDto) => {
-        const response = await updateVariant(accessToken, dto);
-        if (response) {
-            replaceVariantInProduct(productId, response);
+    const handleUpdateVariant = async (dto: UpdateProductVariantDto) => {
+        setSpinner(true);
+
+        try {
+            const response = await updateVariant(accessToken, dto);
+            if (response) {
+                replaceVariantInProduct(productId, response);
+            }
+
+        } catch (error) {
+            console.error("Variant Update Hatası: ", error)
+        } finally {
+            setSpinner(false);
         }
     };
 
     return (
         <Fragment>
+
+            <Backdrop open={spinner} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+                <LoadingSpinner size={50} text="Lütfen bekleyin, ürün kaydediliyor..." color="#fff" />
+            </Backdrop>
+
+
             <TableRow key={id}>
                 <TableCell>
                     <img
@@ -160,7 +186,7 @@ function Variant({ dto, productId }: variantProps) {
             <UpdateVariant
                 open={openEdit}
                 onClose={() => setOpenEdit(false)}
-                onSave={handleUpdate}
+                onSave={handleUpdateVariant}
                 variant={{
                     id,
                     price,
@@ -169,7 +195,11 @@ function Variant({ dto, productId }: variantProps) {
                     attributes: attributes ?? [],
                     imageUrl
                 }}
+                loading={spinner}
             />
+
+
+
         </Fragment>
     );
 }

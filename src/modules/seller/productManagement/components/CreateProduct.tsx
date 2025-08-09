@@ -1,18 +1,18 @@
 import { Box, Stack, TextField, Typography, Button } from '@mui/material'
-import { createRef, useRef, useState } from 'react'
+import { useState } from 'react'
 import VariantForm from './VariantForm'
 import { GoPlus } from 'react-icons/go'
 import { CreateProductDto, CreateProductVariantDto } from '../dto/CreateProductDto'
-import { createProduct, getProducts, uploadVariantImage } from '../../service/seller.service'
+import { createProduct, uploadVariantImage } from '../../service/seller.service'
 import { useAuthStore } from '../../../auth/store/authStore'
 import { ProductResponseDto } from '../dto/ProducResponseDto'
 
 import Backdrop from '@mui/material/Backdrop';
-import { FaSpinner } from 'react-icons/fa';
 
 import '../../../../App.css'
 import { useProductStore } from '../../store/productStore'
 import { useNavigate } from 'react-router-dom'
+import LoadingSpinner from '../../../../common/components/LoadingSpinner'
 
 
 function CreateProduct() {
@@ -22,7 +22,7 @@ function CreateProduct() {
 
     const [loading, setLoading] = useState(false);
 
-    const { setAllProducts: setProduct } = useProductStore();
+    const { appendProduct } = useProductStore();
 
     const navigate = useNavigate();
 
@@ -78,7 +78,7 @@ function CreateProduct() {
         };
 
         try {
-            const response = await createProduct(accessToken, payload) as ProductResponseDto;
+            const response = await createProduct(accessToken, payload);
 
             if (response.variants && response.variants.length > 0) {
                 await Promise.all(
@@ -95,13 +95,12 @@ function CreateProduct() {
                 );
             }
 
+            setLoading(false);
+            appendProduct(response);
+            navigate('/seller');
+
         } catch (err) {
             console.error("Ürün oluşturma hatası:", err);
-        } finally {
-            setLoading(false);
-            const products = await getProducts(accessToken);
-            setProduct(products);
-            navigate('/seller');
         }
     };
 
@@ -222,12 +221,8 @@ function CreateProduct() {
                 </Button>
             </Stack>
 
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1, flexDirection: 'column' }}
-                open={loading}
-            >
-                <FaSpinner size={50} className="spinner" />
-                <Typography sx={{ mt: 2 }}>Lütfen bekleyin, ürün kaydediliyor...</Typography>
+            <Backdrop open={loading} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+                <LoadingSpinner size={50} text="Lütfen bekleyin, ürün kaydediliyor..." color="#fff" />
             </Backdrop>
 
         </Box>

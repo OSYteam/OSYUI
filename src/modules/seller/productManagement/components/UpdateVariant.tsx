@@ -9,6 +9,7 @@ import {
     MenuItem,
     Stack,
     IconButton,
+    Backdrop,
 } from "@mui/material";
 import { MdDelete } from "react-icons/md";
 
@@ -16,8 +17,10 @@ import { ProductStatus } from "../enum/productStatus";
 import { VariantAttributeResponseDto } from "../dto/ProducResponseDto";
 import { AttributeOptions } from "../../../../common/enums/Attributes";
 import { UpdateProductVariantDto } from "../dto/UpdateProductVariantDto";
+import LoadingSpinner from "../../../../common/components/LoadingSpinner";
 
 interface UpdateVariantProps {
+    loading?: boolean;
     open: boolean;
     onClose: () => void;
     variant?: {
@@ -31,7 +34,7 @@ interface UpdateVariantProps {
     onSave: (dto: UpdateProductVariantDto) => Promise<void>;
 }
 
-const UpdateVariant: React.FC<UpdateVariantProps> = ({ open, onClose, variant, onSave }) => {
+const UpdateVariant: React.FC<UpdateVariantProps> = ({ open, onClose, variant, onSave, loading = false }) => {
     const [price, setPrice] = useState(variant?.price ?? 0);
     const [stock, setStock] = useState(variant?.stock ?? 0);
     const [status, setStatus] = useState(variant?.status ?? ProductStatus.AVAILABLE);
@@ -85,7 +88,7 @@ const UpdateVariant: React.FC<UpdateVariantProps> = ({ open, onClose, variant, o
         ]);
     };
 
-    const handleSave = async () => {
+    const handleUpdateVariant = async () => {
         const dto: UpdateProductVariantDto = {
             id: variant?.id,
             price,
@@ -97,7 +100,6 @@ const UpdateVariant: React.FC<UpdateVariantProps> = ({ open, onClose, variant, o
             })),
         };
 
-        console.log(dto);
         await onSave(dto);
         onClose();
     };
@@ -204,10 +206,16 @@ const UpdateVariant: React.FC<UpdateVariantProps> = ({ open, onClose, variant, o
                 <Button onClick={onClose} color="inherit">
                     İptal
                 </Button>
-                <Button onClick={handleSave} variant="contained" color="primary">
+                <Button onClick={handleUpdateVariant} variant="contained" color="primary">
                     Kaydet
                 </Button>
             </DialogActions>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.modal + 10 }}
+                open={loading}
+            >
+                <LoadingSpinner size={50} text="Lütfen bekleyin..." color="#fff" />
+            </Backdrop>
         </Dialog>
     );
 };

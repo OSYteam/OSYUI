@@ -1,4 +1,4 @@
-import { Paper, Table, TableHead, TableRow, TableCell, TableBody, IconButton, Stack, Button, Typography, Box, Collapse } from "@mui/material";
+import { Paper, Table, TableHead, TableRow, TableCell, TableBody, IconButton, Stack, Button, Typography, Box, Collapse, Backdrop } from "@mui/material";
 import React, { useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import { FiChevronUp, FiChevronDown } from "react-icons/fi";
@@ -12,6 +12,7 @@ import Variant from "./Variant";
 import { UpdateProductDto, UpdateProductVariantDto } from "../dto/UpdateProductVariantDto";
 import UpdateVariant from "./UpdateVariant";
 import UpdateProduct from "./UpdateProduct";
+import LoadingSpinner from "../../../../common/components/LoadingSpinner";
 
 const ProductList = () => {
 
@@ -29,20 +30,14 @@ const ProductList = () => {
     const [openCreate, setOpenCreate] = useState(false);
 
     const [openEdit, setOpenEdit] = useState(false);
+    const [spinner, setSpinner] = useState(false);
+
+    const { appendVariantToProduct } = useProductStore();
+
 
     const toggleRow = (productId: string) => {
         setOpenProductId(openProductId === productId ? null : productId);
     };
-
-
-    const handleDeleteProduct = async (productId: string) => {
-
-        const response = await deleteProduct(accessToken, productId);
-
-        // ALERT --------- productStore 'u güncellemedik. Orayı güncellemeyi unutmayalım ramsss
-        if (response === HttpStatusCode.Ok)
-            dropProduct(productId);
-    }
 
     const handleDialogResult = (result: ConfirmDialogResult) => {
         dialogSetOpen(false);
@@ -63,21 +58,42 @@ const ProductList = () => {
         setOpenEdit(true);
     }
 
-    const handleOpenCreate = (productId: string) => {
+    const handleOpenCreateVariant = (productId: string) => {
         setSelectedProduct(productId);
         setOpenCreate(true);
     };
 
-    const { appendVariantToProduct } = useProductStore();
+    const handleDeleteProduct = async (productId: string) => {
+        try {
+            const response = await deleteProduct(accessToken, productId);
 
-    const handleCreate = async (dto: UpdateProductVariantDto) => {
-        if (!selectedProduct) return;
-        const response = await createVariant(accessToken, selectedProduct, dto);
-        if (response) {
-            appendVariantToProduct(selectedProduct, response);
+            if (response === HttpStatusCode.Ok)
+                dropProduct(productId);
+        } catch (error) {
+            console.error("Delete Product ERror:", error);
         }
-        setOpenCreate(false);
-        setSelectedProduct(null);
+    }
+
+    const handleCreateVariant = async (dto: UpdateProductVariantDto) => {
+        setSpinner(true);
+
+        try {
+            if (!selectedProduct) return;
+            const response = await createVariant(accessToken, selectedProduct, dto);
+            if (response) {
+                appendVariantToProduct(selectedProduct, response);
+            }
+            setOpenCreate(false);
+            setSelectedProduct(null);
+
+        } catch (error) {
+            console.error("Variant Create Hatası: ", error);
+        }
+        finally {
+            setSpinner(false);
+        }
+
+
     };
 
     return (
@@ -187,7 +203,7 @@ const ProductList = () => {
                                                     variant="contained"
                                                     size="small"
                                                     color="primary"
-                                                    onClick={() => handleOpenCreate(product.id)}
+                                                    onClick={() => handleOpenCreateVariant(product.id)}
                                                     sx={{ textTransform: "none", borderRadius: "8px" }}
                                                 >
                                                     + Varyant Ekle
@@ -244,7 +260,8 @@ const ProductList = () => {
                         setOpenCreate(false);
                         setSelectedProduct(null);
                     }}
-                    onSave={handleCreate}
+                    onSave={handleCreateVariant}
+                    loading={spinner}
                 />
             )}
 

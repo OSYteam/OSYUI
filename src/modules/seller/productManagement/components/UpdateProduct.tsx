@@ -7,11 +7,13 @@ import {
     TextField,
     Button,
     Stack,
+    Backdrop,
 } from "@mui/material";
 import { UpdateProductDto } from "../dto/UpdateProductVariantDto";
 import { useAuthStore } from "../../../auth/store/authStore";
 import { updateProduct } from "../../service/seller.service";
 import { useProductStore } from "../../store/productStore";
+import LoadingSpinner from "../../../../common/components/LoadingSpinner";
 
 interface UpdateProductProps {
     open: boolean;
@@ -28,6 +30,8 @@ const UpdateProduct: React.FC<UpdateProductProps> = ({ open, onClose, product })
     const [name, setName] = useState(product?.name ?? "");
     const [desc, setDesc] = useState(product?.desc ?? "");
     const [discount, setDiscount] = useState(product?.discount ?? 0);
+
+    const [spinner, setSpinner] = useState(false);
 
     const { accessToken } = useAuthStore();
 
@@ -46,18 +50,28 @@ const UpdateProduct: React.FC<UpdateProductProps> = ({ open, onClose, product })
     const { replaceProduct } = useProductStore();
 
     const handleSave = async () => {
-        const dto: UpdateProductDto = {
-            name,
-            desc,
-            discount,
-        };
 
-        if (product) {
-            const response = await updateProduct(accessToken, product?.id, dto);
-            replaceProduct(response);
+        setSpinner(true);
+        try {
+
+            const dto: UpdateProductDto = {
+                name,
+                desc,
+                discount,
+            };
+
+            if (product) {
+                const response = await updateProduct(accessToken, product?.id, dto);
+                replaceProduct(response);
+            }
+            onClose();
+
+        } catch (error) {
+            console.error("Update Product Errror:", error);
+        } finally {
+            setSpinner(false);
         }
 
-        onClose();
     };
 
     return (
@@ -96,6 +110,9 @@ const UpdateProduct: React.FC<UpdateProductProps> = ({ open, onClose, product })
                     Kaydet
                 </Button>
             </DialogActions>
+            <Backdrop open={spinner} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+                <LoadingSpinner size={50} text="Lütfen bekleyin, ürün kaydediliyor..." color="#fff" />
+            </Backdrop>
         </Dialog>
     );
 };
