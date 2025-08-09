@@ -2,7 +2,6 @@ import { ProductStatus } from "../enum/productStatus";
 
 export interface VariantAttributeResponseDto {
     attributeName: string;
-
     attributeValue: string;
 }
 

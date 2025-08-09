@@ -2,6 +2,7 @@ import { ProductResponseDto, ProductVariantResponseDto } from "../../../common/d
 import api from '../../../api/api'
 import { HttpStatusCode } from "axios";
 import { CreateProductDto } from "../productManagement/dto/CreateProductDto";
+import { UpdateProductDto, UpdateProductVariantDto } from "../productManagement/dto/UpdateProductVariantDto";
 
 //#region --- PRODUCT ----
 
@@ -54,9 +55,21 @@ export async function createProduct(accessToken: string, dto: CreateProductDto):
     }
 }
 
+export async function updateProduct(accessToken: string, pId: string, dto: UpdateProductDto) {
+    try {
+        const headers = {
+            Authorization: `Bearer ${accessToken}`
+        }
+
+        const response = await api.patch(`seller-product/${pId}`, dto, { headers });
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
 //#endregion
-
-
 
 //#region --- VARIANTS ----
 
@@ -75,6 +88,35 @@ export async function deleteVariant(accessToken: string, id: string): Promise<nu
         throw error;
     }
 }
+
+export async function createVariant(accessToken: string, pId: string, dto: UpdateProductVariantDto) {
+    try {
+        const headers = {
+            Authorization: `Bearer ${accessToken}`
+        };
+
+        const response = await api.post(`seller-product/variant/`, dto, { headers });
+        return response.data as HttpStatusCode;
+    } catch (error) {
+        console.error(`Create Variant Error : ${error}`);
+        throw error;
+    }
+}
+
+export async function updateVariant(accessToken: string, dto: UpdateProductVariantDto) {
+    try {
+        const headers = {
+            Authorization: `Bearer ${accessToken}`
+        };
+
+        const response = await api.patch(`seller-product/variant/`, dto, { headers });
+        return response.data as HttpStatusCode;
+    } catch (error) {
+        console.error(`Update Variant Error : ${error}`);
+        throw error;
+    }
+}
+
 
 
 //#endregion 

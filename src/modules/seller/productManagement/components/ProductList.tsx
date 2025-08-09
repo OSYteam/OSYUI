@@ -4,12 +4,14 @@ import { CiEdit } from "react-icons/ci";
 import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
 import { ConfirmDialog, ConfirmDialogResult } from "../../../../common/components/ConfirmDialog";
-import { deleteProduct, deleteVariant } from '../../service/seller.service';
+import { createVariant, deleteProduct } from '../../service/seller.service';
 import { useProductStore } from "../../store/productStore";
 import { useAuthStore } from "../../../auth/store/authStore";
 import { HttpStatusCode } from "axios";
-import ProductStatusCell from "./ProductStatusCell";
 import Variant from "./Variant";
+import { UpdateProductDto, UpdateProductVariantDto } from "../dto/UpdateProductVariantDto";
+import UpdateVariant from "./UpdateVariant";
+import UpdateProduct from "./UpdateProduct";
 
 const ProductList = () => {
 
@@ -24,15 +26,17 @@ const ProductList = () => {
     const { products, dropProduct } = useProductStore();
     const { accessToken } = useAuthStore();
 
+    const [openCreate, setOpenCreate] = useState(false);
+
+    const [openEdit, setOpenEdit] = useState(false);
+
     const toggleRow = (productId: string) => {
         setOpenProductId(openProductId === productId ? null : productId);
     };
 
     const handleDeleteProduct = async (productId: string) => {
 
-        //backend'den sil
         const response = await deleteProduct(accessToken, productId);
-        console.log(response);
 
         // ALERT --------- productStore 'u güncellemedik. Orayı güncellemeyi unutmayalım ramsss
         if (response === HttpStatusCode.Ok)
@@ -51,6 +55,23 @@ const ProductList = () => {
             case "close":
                 break;
         }
+    };
+
+    const handleOpenEdit = (productId: string) => {
+        setSelectedProduct(productId);
+        setOpenEdit(true);
+    }
+
+    const handleOpenCreate = (productId: string) => {
+        setSelectedProduct(productId);
+        setOpenCreate(true);
+    };
+
+    const handleCreate = async (dto: UpdateProductVariantDto) => {
+        if (!selectedProduct) return;
+        await createVariant(accessToken, selectedProduct, dto);
+        setOpenCreate(false);
+        setSelectedProduct(null);
     };
 
     return (
@@ -97,7 +118,7 @@ const ProductList = () => {
                                             variant="contained"
                                             size="small"
                                             startIcon={<CiEdit />}
-                                            onClick={() => console.log("Düzenle tıklandı")}
+                                            onClick={() => handleOpenEdit(product.id)}
                                             sx={{
                                                 textTransform: "none",
                                                 bgcolor: "#1976d2",
@@ -154,6 +175,19 @@ const ProductList = () => {
                                 <TableCell colSpan={7} sx={{ p: 0, bgcolor: "#fafafa" }}>
                                     <Collapse in={openProductId === product.id} timeout="auto" unmountOnExit>
                                         <Box sx={{ px: 4, py: 2 }}>
+
+                                            <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 1 }}>
+                                                <Button
+                                                    variant="contained"
+                                                    size="small"
+                                                    color="primary"
+                                                    onClick={() => handleOpenCreate(product.id)}
+                                                    sx={{ textTransform: "none", borderRadius: "8px" }}
+                                                >
+                                                    + Varyant Ekle
+                                                </Button>
+                                            </Box>
+
                                             {product.variants && product.variants.length > 0 ? (
                                                 <Table size="small">
                                                     <TableHead>
@@ -162,6 +196,7 @@ const ProductList = () => {
                                                             <TableCell>Fiyat</TableCell>
                                                             <TableCell>Stok</TableCell>
                                                             <TableCell>Durum</TableCell>
+                                                            <TableCell>Özellikler</TableCell>
                                                             <TableCell>Aksiyonlar</TableCell>
                                                         </TableRow>
                                                     </TableHead>
@@ -188,6 +223,7 @@ const ProductList = () => {
                                                         </Button>
                                                     </Box>
                                                 </>
+
                                             )}
                                         </Box>
                                     </Collapse>
@@ -198,8 +234,37 @@ const ProductList = () => {
                     ))}
                 </TableBody>
             </Table>
+
+            {selectedProduct && (
+                <UpdateVariant
+                    open={openCreate}
+                    onClose={() => {
+                        setOpenCreate(false);
+                        setSelectedProduct(null);
+                    }}
+                    onSave={handleCreate}
+                />
+            )}
+
+            {selectedProduct && (
+
+                <UpdateProduct
+                    open={openEdit}
+                    onClose={() => {
+                        setOpenEdit(false);
+                        setSelectedProduct(null);
+                    }}
+                    product={
+                        products.find(p => p.id === selectedProduct)
+                    }
+
+                />
+            )}
+
         </Paper>
+
     );
+
 };
 
 

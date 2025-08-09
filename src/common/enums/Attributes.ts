@@ -1,8 +1,8 @@
 export enum Attributes {
     SIZE = 0,
     COLOR = 1,
-    LENGTH = 3,
-    WEIGHT = 4,
+    LENGTH = 2,
+    WEIGHT = 3,
 }
 
 export enum AttributeSize {
@@ -10,15 +10,15 @@ export enum AttributeSize {
     S = 1,
     M = 3,
     L = 4,
-    XL = 4,
-    XXL = 4,
+    XL = 5,
+    XXL = 6,
 }
 
 export enum AttributeColor {
     RED = 0,
     BLUE = 1,
-    BLACK = 3,
-    WHITE = 4,
+    BLACK = 2,
+    WHITE = 3,
 }
 
 export const AttributeOptions = [
