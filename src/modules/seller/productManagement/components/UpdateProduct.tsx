@@ -11,6 +11,7 @@ import {
 import { UpdateProductDto } from "../dto/UpdateProductVariantDto";
 import { useAuthStore } from "../../../auth/store/authStore";
 import { updateProduct } from "../../service/seller.service";
+import { useProductStore } from "../../store/productStore";
 
 interface UpdateProductProps {
     open: boolean;
@@ -42,6 +43,8 @@ const UpdateProduct: React.FC<UpdateProductProps> = ({ open, onClose, product })
         }
     }, [product]);
 
+    const { replaceProduct } = useProductStore();
+
     const handleSave = async () => {
         const dto: UpdateProductDto = {
             name,
@@ -49,8 +52,10 @@ const UpdateProduct: React.FC<UpdateProductProps> = ({ open, onClose, product })
             discount,
         };
 
-        if (product)
-            await updateProduct(accessToken, product?.id, dto);
+        if (product) {
+            const response = await updateProduct(accessToken, product?.id, dto);
+            replaceProduct(response);
+        }
 
         onClose();
     };

@@ -55,7 +55,7 @@ export async function createProduct(accessToken: string, dto: CreateProductDto):
     }
 }
 
-export async function updateProduct(accessToken: string, pId: string, dto: UpdateProductDto) {
+export async function updateProduct(accessToken: string, pId: string, dto: UpdateProductDto): Promise<ProductResponseDto> {
     try {
         const headers = {
             Authorization: `Bearer ${accessToken}`
@@ -81,7 +81,7 @@ export async function deleteVariant(accessToken: string, id: string): Promise<nu
         };
 
         const response = await api.delete(`seller-product/variant/${id}`, { headers });
-        return response.data as HttpStatusCode;
+        return response.status;
 
     } catch (error) {
         console.error(`Delete Variant Error : ${error}`);
@@ -89,28 +89,28 @@ export async function deleteVariant(accessToken: string, id: string): Promise<nu
     }
 }
 
-export async function createVariant(accessToken: string, pId: string, dto: UpdateProductVariantDto) {
+export async function createVariant(accessToken: string, pId: string, dto: UpdateProductVariantDto): Promise<ProductVariantResponseDto> {
     try {
         const headers = {
             Authorization: `Bearer ${accessToken}`
         };
 
         const response = await api.post(`seller-product/variant/`, dto, { headers });
-        return response.data as HttpStatusCode;
+        return response.data;
     } catch (error) {
         console.error(`Create Variant Error : ${error}`);
         throw error;
     }
 }
 
-export async function updateVariant(accessToken: string, dto: UpdateProductVariantDto) {
+export async function updateVariant(accessToken: string, dto: UpdateProductVariantDto): Promise<ProductVariantResponseDto> {
     try {
         const headers = {
             Authorization: `Bearer ${accessToken}`
         };
 
-        const response = await api.patch(`seller-product/variant/`, dto, { headers });
-        return response.data as HttpStatusCode;
+        const response = await api.patch(`seller-product/variant/${dto.id}`, dto, { headers });
+        return response.data;
     } catch (error) {
         console.error(`Update Variant Error : ${error}`);
         throw error;

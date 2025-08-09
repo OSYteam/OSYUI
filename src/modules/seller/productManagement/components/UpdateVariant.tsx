@@ -87,7 +87,7 @@ const UpdateVariant: React.FC<UpdateVariantProps> = ({ open, onClose, variant, o
 
     const handleSave = async () => {
         const dto: UpdateProductVariantDto = {
-            id: variant?.id ?? undefined,
+            id: variant?.id,
             price,
             status,
             stock,
@@ -96,6 +96,8 @@ const UpdateVariant: React.FC<UpdateVariantProps> = ({ open, onClose, variant, o
                 attributeVal: Number(attr.attributeValue),
             })),
         };
+
+        console.log(dto);
         await onSave(dto);
         onClose();
     };

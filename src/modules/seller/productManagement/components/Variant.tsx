@@ -12,12 +12,19 @@ import { AttributeOptions } from '../../../../common/enums/Attributes';
 import { FaRulerCombined, FaTshirt, FaWeightHanging } from 'react-icons/fa';
 import UpdateVariant from './UpdateVariant';
 import { UpdateProductVariantDto } from '../dto/UpdateProductVariantDto';
+import { useProductStore } from '../../store/productStore';
 
 const domainPath = "http://srv895462.hstgr.cloud";
+interface variantProps {
+    dto: ProductVariantResponseDto;
+    productId: string;
+}
 
-function Variant({ id, price, status, stock, imageUrl, attributes }: ProductVariantResponseDto) {
+
+function Variant({ dto, productId }: variantProps) {
 
     const [openEdit, setOpenEdit] = useState(false);
+    const { id, price, status, stock, imageUrl, attributes } = dto;
 
     const getAttributeIcon = (label?: string) => {
         switch (label) {
@@ -31,17 +38,21 @@ function Variant({ id, price, status, stock, imageUrl, attributes }: ProductVari
 
 
     const { accessToken } = useAuthStore();
+    const { replaceVariantInProduct, removeVariantFromProduct } = useProductStore();
 
     const handleDeleteVariant = async (variantId: string) => {
-        const response = await deleteVariant(accessToken, variantId);
-        console.log(response);
+        const status = await deleteVariant(accessToken, variantId);
 
-        if (response === HttpStatusCode.Ok)
-            window.location.reload();
+        if (status === HttpStatusCode.Ok)
+            removeVariantFromProduct(productId, variantId);
+
     };
 
     const handleUpdate = async (dto: UpdateProductVariantDto) => {
-        await updateVariant(accessToken, dto);
+        const response = await updateVariant(accessToken, dto);
+        if (response) {
+            replaceVariantInProduct(productId, response);
+        }
     };
 
     return (

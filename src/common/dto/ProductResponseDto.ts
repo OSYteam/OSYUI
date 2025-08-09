@@ -16,7 +16,7 @@ export interface ProductResponseDto {
 
 export interface ProductVariantResponseDto {
     id: string;
-    imageUrl: string;
+    imageUrl?: string;
     price: number;
     stock: number;
     status: ProductStatus;

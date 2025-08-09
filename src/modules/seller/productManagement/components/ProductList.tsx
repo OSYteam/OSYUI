@@ -23,7 +23,7 @@ const ProductList = () => {
 
     const [dialogOpen, dialogSetOpen] = useState(false);
 
-    const { products, dropProduct } = useProductStore();
+    const { products, removeProductById: dropProduct } = useProductStore();
     const { accessToken } = useAuthStore();
 
     const [openCreate, setOpenCreate] = useState(false);
@@ -33,6 +33,7 @@ const ProductList = () => {
     const toggleRow = (productId: string) => {
         setOpenProductId(openProductId === productId ? null : productId);
     };
+
 
     const handleDeleteProduct = async (productId: string) => {
 
@@ -67,9 +68,14 @@ const ProductList = () => {
         setOpenCreate(true);
     };
 
+    const { appendVariantToProduct } = useProductStore();
+
     const handleCreate = async (dto: UpdateProductVariantDto) => {
         if (!selectedProduct) return;
-        await createVariant(accessToken, selectedProduct, dto);
+        const response = await createVariant(accessToken, selectedProduct, dto);
+        if (response) {
+            appendVariantToProduct(selectedProduct, response);
+        }
         setOpenCreate(false);
         setSelectedProduct(null);
     };
@@ -204,12 +210,8 @@ const ProductList = () => {
                                                         {product.variants.map((variant) => (
                                                             <Variant
                                                                 key={variant.id}
-                                                                id={variant.id}
-                                                                price={variant.price}
-                                                                status={variant.status}
-                                                                stock={variant.stock}
-                                                                attributes={variant.attributes}
-                                                                imageUrl={variant.imageUrl}
+                                                                dto={variant}
+                                                                productId={product.id}
                                                             />
                                                         ))}
                                                     </TableBody>
@@ -247,17 +249,13 @@ const ProductList = () => {
             )}
 
             {selectedProduct && (
-
                 <UpdateProduct
                     open={openEdit}
                     onClose={() => {
                         setOpenEdit(false);
                         setSelectedProduct(null);
                     }}
-                    product={
-                        products.find(p => p.id === selectedProduct)
-                    }
-
+                    product={products.find(p => p.id === selectedProduct)}
                 />
             )}
 

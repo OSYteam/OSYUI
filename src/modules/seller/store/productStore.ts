@@ -1,48 +1,81 @@
 import { create } from "zustand";
-import { ProductResponseDto } from "../../../common/dto/ProductResponseDto";
+import { ProductResponseDto, ProductVariantResponseDto } from "../../../common/dto/ProductResponseDto";
 import { immer } from "zustand/middleware/immer";
+import { UpdateProductVariantDto } from "../productManagement/dto/UpdateProductVariantDto";
 
 interface ProductState {
     products: ProductResponseDto[];
-    setProduct: (product: ProductResponseDto[]) => void;
-    addProduct: (product: ProductResponseDto) => void;
-    updateProduct: (product: ProductResponseDto) => void;
-    dropProduct: (id: string) => void;
-    dropVariant: (id: string) => void;
-    clearProduct: () => void;
+    setAllProducts: (product: ProductResponseDto[]) => void;
+    appendProduct: (product: ProductResponseDto) => void;
+    replaceProduct: (product: ProductResponseDto) => void;
+    removeProductById: (id: string) => void;
+    appendVariantToProduct: (productId: string, dto: ProductVariantResponseDto) => void;
+    replaceVariantInProduct: (productId: string, variant: ProductVariantResponseDto) => void;
+    removeVariantFromProduct: (productId: string, variantId: string) => void;
+    clearAllProducts: () => void;
 }
 
 export const useProductStore = create<ProductState>()(
     immer((set) => ({
         products: [],
 
-        setProduct: (products) => set((state) => {
-            state.products = products;
-            console.log(state.products);
-
+        clearAllProducts: () => set((state) => {
+            state.products = [];
         }),
 
-        addProduct: (product) => set((state) => {
+        setAllProducts: (products) => set((state) => {
+            state.products = products;
+        }),
+
+        appendProduct: (product) => set((state) => {
             state.products.push(product);
         }),
 
-        updateProduct: (updated) => set((state) => {
+        replaceProduct: (updated) => set((state) => {
             const index = state.products.findIndex(p => p.id === updated.id);
             if (index !== -1) {
                 state.products[index] = updated;
             }
         }),
 
-        dropProduct: (id) => set((state) => {
+        removeProductById: (id) => set((state) => {
             state.products = state.products.filter(p => p.id !== id);
         }),
 
-        dropVariant: (id) => set(() => {
+        appendVariantToProduct: (productId, variant) => set((state) => {
+            const product = state.products.find(p => p.id === productId);
+            if (product) {
+                if (!product.variants)
+                    product.variants = [];
+
+                product.variants.push({
+                    id: variant.id,
+                    imageUrl: variant.imageUrl,
+                    price: variant.price,
+                    status: variant.status,
+                    stock: variant.stock,
+                    attributes: variant.attributes
+                });
+            }
+        }),
+
+        replaceVariantInProduct: (productId, updatedVariant) => set((state) => {
+            const product = state.products.find((p) => p.id === productId);
+            if (product?.variants) {
+                const index = product.variants.findIndex((v) => v.id === updatedVariant.id);
+                if (index !== -1) {
+                    product.variants[index] = updatedVariant;
+                }
+            }
 
         }),
 
-        clearProduct: () => set((state) => {
-            state.products = [];
+        removeVariantFromProduct: (productId, variantId) => set((state) => {
+            const product = state.products.find((p) => p.id === productId);
+            if (product?.variants) {
+                product.variants = product.variants.filter((v) => v.id !== variantId);
+            }
         }),
+
     }))
 );

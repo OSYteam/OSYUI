@@ -22,7 +22,7 @@ import { getProducts } from '../seller/service/seller.service';
 const Login = () => {
 
   const { setAccessToken, setUserInformation } = useAuthStore();
-  const { setProduct } = useProductStore();
+  const { setAllProducts: setProduct } = useProductStore();
 
   const [userType, setUserType] = useState<'customer' | 'seller'>('customer');
   const [formData, setFormData] = useState({

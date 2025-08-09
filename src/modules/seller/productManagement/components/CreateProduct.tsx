@@ -22,7 +22,7 @@ function CreateProduct() {
 
     const [loading, setLoading] = useState(false);
 
-    const { setProduct } = useProductStore();
+    const { setAllProducts: setProduct } = useProductStore();
 
     const navigate = useNavigate();
 
@@ -70,15 +70,12 @@ function CreateProduct() {
 
         setLoading(true);
 
-
         const payload: CreateProductDto = {
             name: productData.name,
             desc: productData.desc,
             discount: productData.discount,
             variants: variants
         };
-
-        console.log('API’ye gönderilecek DTO:', payload);
 
         try {
             const response = await createProduct(accessToken, payload) as ProductResponseDto;
