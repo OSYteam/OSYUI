@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import ReceiptItem from "../order/components/ReceiptItem/ReceiptItem";
+import ReceiptItem from "../features/order/components/ReceiptItem/ReceiptItem";
 import mockReceiptData from "./mock/receiptData";
 
 

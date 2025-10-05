@@ -1,6 +1,6 @@
-import { ProductStatus } from '../enum/productStatus';
 import { Variant } from './variant';
 import { mockVariants } from '../mock/variant'
+import { ProductStatus } from '../../modules/seller/features/productManagement/enum/productStatus';
 
 interface Product {
   id: number;

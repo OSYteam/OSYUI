@@ -1,7 +1,7 @@
 import { Box, Card, CardActionArea, CardContent, Typography, Stack } from '@mui/material';
 import { useState } from 'react';
-import { statsItems } from './order/components/Data/statsItems';
-import StatsChart from './order/components/Stats/StatsChart';
+import { statsItems } from './features/order/components/Data/statsItems';
+import StatsChart from './features/order/components/Stats/StatsChart';
 
 
 const Stats = () => {

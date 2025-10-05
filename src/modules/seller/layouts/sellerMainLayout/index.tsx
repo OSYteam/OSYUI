@@ -15,7 +15,7 @@ import DrawerMenu from './components/DrawerMenu';
 
 const drawerWidth = 200;
 
-const SellerLayout = () => {
+const SellerMainLayout = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -100,4 +100,4 @@ const SellerLayout = () => {
   );
 };
 
-export default SellerLayout;
+export default SellerMainLayout;

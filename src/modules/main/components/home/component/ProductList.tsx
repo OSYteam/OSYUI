@@ -1,8 +1,8 @@
-import Product from './Product'
 
 import { Box } from '@mui/material'
+import Product from './Product';
+import { mockProducts } from '../../../../../common/mock/products';
 
-import { mockProducts } from '../seller/productManagement/mock/products';
 
 
 function ProductList() {

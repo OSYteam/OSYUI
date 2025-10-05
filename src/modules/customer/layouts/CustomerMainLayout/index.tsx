@@ -1,20 +1,17 @@
 import {
   Box,
-  Container,
-  CssBaseline,
   IconButton,
   InputBase,
   Paper
 } from '@mui/material';
 import { Outlet } from 'react-router-dom';
-import Appbar from '../sellerLayout/components/Appbar';
+import Appbar from '../../../seller/layouts/sellerMainLayout/components/Appbar';
 
 import { FaSearch } from "react-icons/fa";
-import BottomNavBar from '../../modules/customer/component/BottomNavBar';
 
 
 //müşteri layout
-const RootLayout = () => {
+const CustomerMainLayout = () => {
 
   return (
 
@@ -78,10 +75,9 @@ const RootLayout = () => {
 
       </Box>
 
-      <BottomNavBar />
 
     </>
   );
 };
 
-export default RootLayout;
+export default CustomerMainLayout;

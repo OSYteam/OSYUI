@@ -2,10 +2,10 @@ import { Box, Container } from '@mui/material';
 // import { useAuthStore } from '../modules/auth/store/authStore';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import logo2 from '../assets/images/06.jpg'
-import { useAuthStore } from '../modules/auth/store/authStore';
 import { useEffect } from 'react';
+import { useAuthStore } from '../../../auth/store/authStore';
 
-const AuthLayout = () => {
+const CustomerAuthLayout = () => {
 
   // const isAuthenticated = useAuthStore(state => state.isAuthenticated);
 
@@ -78,4 +78,4 @@ const AuthLayout = () => {
   );
 };
 
-export default AuthLayout;
+export default CustomerAuthLayout;

@@ -1,5 +1,5 @@
 import { ProductResponseDto, ProductVariantResponseDto } from "../../../common/dto/ProductResponseDto";
-import api from '../../../api/api'
+import api from '../../../lib/api/api'
 import { HttpStatusCode } from "axios";
 import { CreateProductDto } from "../productManagement/dto/CreateProductDto";
 import { UpdateProductDto, UpdateProductVariantDto } from "../productManagement/dto/UpdateProductVariantDto";

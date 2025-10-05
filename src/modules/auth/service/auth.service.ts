@@ -1,4 +1,4 @@
-import api from "../../../api/api";
+import api from "../../../lib/api/api";
 import { LoginDto } from "../dto/LoginDto";
 import { useAuthStore } from "../store/authStore";
 
