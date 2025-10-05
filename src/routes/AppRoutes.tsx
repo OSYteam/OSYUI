@@ -10,16 +10,15 @@ import Register from '../modules/auth/Register';
 
 import CustomerLogin from '../modules/customer/auth';
 import CustomerRouteGuard from '../modules/customer/auth/CustomerRouteGuard';
+import CustomerAuthLayout from '../modules/customer/layouts/CustomerAuthLayout';
 import CustomerMainLayout from '../modules/customer/layouts/CustomerMainLayout';
 import Home from '../modules/main/components/home';
 import SellerLogin from '../modules/seller/auth';
-import SellerRouteGuard from '../modules/seller/auth/SellerAuthGuard';
+import Dashboard from '../modules/seller/features/dashboard';
+import ProductList from '../modules/seller/features/productManagement/features/productList';
 import SellerAuthLayout from '../modules/seller/layouts/SellerAuthLayout';
-import CustomerAuthLayout from '../modules/customer/layouts/CustomerAuthLayout';
 import SellerMainLayout from '../modules/seller/layouts/sellerMainLayout';
-import Dashboard from '../modules/seller/features/dashboard/Dashboard';
-import CreateProduct from '../modules/seller/features/productManagement/components/CreateProduct';
-import ProductManagement from '../modules/seller/features/productManagement/ProductManagement';
+import CreateProduct from '../modules/seller/features/productManagement/features/createProduct';
 
 
 /**
@@ -95,14 +94,14 @@ const sellerRoutes = [
   // protected
   {
     path: '/seller',
-    element: <SellerRouteGuard />,
+    // element: <SellerRouteGuard />,
     children: [
       {
         element: <SellerMainLayout />,
         children: [
           { index: true, element: <Dashboard /> },
-          { path: 'product', element: <ProductManagement /> },
-          { path: 'create-product', element: <CreateProduct /> }
+          { path: 'product/list', element: <ProductList /> },
+          { path: 'product/create', element: <CreateProduct /> }
         ]
       }
     ]
