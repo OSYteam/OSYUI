@@ -3,14 +3,15 @@ import React, { useState } from "react";
 import { CiEdit } from "react-icons/ci";
 import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
-import { ConfirmDialog, ConfirmDialogResult } from "../../../../common/components/ConfirmDialog";
-import { deleteProduct } from '../../service/seller.service';
-import { useProductStore } from "../../store/productStore";
-import { useAuthStore } from "../../../auth/store/authStore";
+
 import { HttpStatusCode } from "axios";
 import Variant from "./Variant";
 import UpdateVariant from "./UpdateVariant";
 import UpdateProduct from "./UpdateProduct";
+import { ConfirmDialogResult, ConfirmDialog } from "../../../../../common/components/ConfirmDialog";
+import { useAuthStore } from "../../../../auth/store/authStore";
+import { deleteProduct } from "../../../service/seller.service";
+import { useProductStore } from "../../../store/productStore";
 
 const ProductList = () => {
 
@@ -198,11 +199,12 @@ const ProductList = () => {
                                                     </TableHead>
                                                     <TableBody>
                                                         {product.variants.map((variant) => (
-                                                            <Variant
-                                                                key={variant.id}
-                                                                dto={variant}
-                                                                productId={product.id}
-                                                            />
+                                                            // <Variant
+                                                            //     key={variant.id}
+                                                            //     dto={variant}
+                                                            //     productId={product.id}
+                                                            // />
+                                                            <></>
                                                         ))}
                                                     </TableBody>
                                                 </Table>

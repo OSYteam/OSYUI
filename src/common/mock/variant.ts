@@ -1,9 +1,9 @@
-import { ProductStatus } from "../enum/productStatus";
-import redTshirt from '../../../../assets/images/products/red-shirt.jpg'
-import blackTshirt from '../../../../assets/images/products/black-shirt.jpg'
-import blueTshirt from '../../../../assets/images/products/blue-shirt.jpg'
-import whiteTshirt from '../../../../assets/images/products/white-shirt.jpg'
-import grayTshirt from '../../../../assets/images/products/gray-shirt.jpg'
+// import "redTshirt" from '../../../../assets/images/products/red-shirt.jpg'
+// import "blackTshirt" from '../../../../assets/images/products/black-shirt.jpg'
+// import "blueTshirt" from '../../../../assets/images/products/blue-shirt.jpg'
+// import "whiteTshirt" from '../../../../assets/images/products/white-shirt.jpg'
+// import "grayTshirt" from '../../../../assets/images/products/gray-shirt.jpg'
+import { ProductStatus } from '../../modules/seller/features/productManagement/enum/productStatus'
 
 interface VariantAttribute {
     attributes: string;
@@ -31,7 +31,7 @@ export const mockVariants: Variant[] = [
         stock: 15,
         price: 199.90,
         status: ProductStatus.AVAILABLE,
-        imageUrl: blackTshirt
+        imageUrl: "blackTshirt"
     },
     {
         id: 2,
@@ -43,7 +43,7 @@ export const mockVariants: Variant[] = [
         stock: 5,
         price: 199.90,
         status: ProductStatus.AVAILABLE,
-        imageUrl: whiteTshirt
+        imageUrl: "whiteTshirt"
     },
     {
         id: 3,
@@ -55,7 +55,7 @@ export const mockVariants: Variant[] = [
         stock: 0,
         price: 189.90,
         status: ProductStatus.OUT_OF_STOCK,
-        imageUrl: grayTshirt
+        imageUrl: "grayTshirt"
     },
     {
         id: 4,
@@ -67,7 +67,7 @@ export const mockVariants: Variant[] = [
         stock: 8,
         price: 209.90,
         status: ProductStatus.AVAILABLE,
-        imageUrl: blueTshirt
+        imageUrl: "blueTshirt"
     },
     {
         id: 5,
@@ -79,6 +79,6 @@ export const mockVariants: Variant[] = [
         stock: 0,
         price: 199.90,
         status: ProductStatus.UNAVAILABLE,
-        imageUrl: redTshirt
+        imageUrl: "redTshirt"
     },
 ];

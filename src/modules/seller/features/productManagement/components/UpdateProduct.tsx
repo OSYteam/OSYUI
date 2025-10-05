@@ -10,10 +10,11 @@ import {
     Backdrop,
 } from "@mui/material";
 import { UpdateProductDto } from "../dto/UpdateProductVariantDto";
-import { useAuthStore } from "../../../auth/store/authStore";
-import { updateProduct } from "../../service/seller.service";
-import { useProductStore } from "../../store/productStore";
-import LoadingSpinner from "../../../../common/components/LoadingSpinner";
+import LoadingSpinner from "../../../../../common/components/LoadingSpinner";
+import { useAuthStore } from "../../../../auth/store/authStore";
+import { updateProduct } from "../../../service/seller.service";
+import { useProductStore } from "../../../store/productStore";
+
 
 interface UpdateProductProps {
     open: boolean;
@@ -111,7 +112,7 @@ const UpdateProduct: React.FC<UpdateProductProps> = ({ open, onClose, product })
                 </Button>
             </DialogActions>
             <Backdrop open={spinner} sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-                <LoadingSpinner size={50} text="Lütfen bekleyin, ürün kaydediliyor..." color="#fff" />
+                {/* <LoadingSpinner size={50} text="Lütfen bekleyin, ürün kaydediliyor..." color="#fff" /> */}
             </Backdrop>
         </Dialog>
     );

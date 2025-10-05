@@ -15,13 +15,14 @@ import { MdDelete } from "react-icons/md";
 
 import { ProductStatus } from "../enum/productStatus";
 import { VariantAttributeResponseDto } from "../dto/ProducResponseDto";
-import { AttributeOptions } from "../../../../common/enums/Attributes";
-import { UpdateProductVariantDto } from "../dto/UpdateProductVariantDto";
-import LoadingSpinner from "../../../../common/components/LoadingSpinner";
-import { useAuthStore } from "../../../auth/store/authStore";
-import { createVariant, updateVariant } from "../../service/seller.service";
-import { useProductStore } from "../../store/productStore";
+
 import { CreateProductVariantDto } from "../dto/CreateProductDto";
+import LoadingSpinner from "../../../../../common/components/LoadingSpinner";
+import { AttributeOptions } from "../../../../../common/enums/Attributes";
+import { useAuthStore } from "../../../../auth/store/authStore";
+import { updateVariant, createVariant } from "../../../service/seller.service";
+import { useProductStore } from "../../../store/productStore";
+import { UpdateProductVariantDto } from "../dto/UpdateProductVariantDto";
 
 interface UpdateVariantProps {
     mode: "create" | "update";

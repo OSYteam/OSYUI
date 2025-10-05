@@ -1,8 +1,7 @@
 import { Box, Container } from '@mui/material';
 // import { useAuthStore } from '../modules/auth/store/authStore';
-import { Navigate, Outlet, useNavigate } from 'react-router-dom';
-import logo2 from '../assets/images/06.jpg'
 import { useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../../auth/store/authStore';
 
 const CustomerAuthLayout = () => {
@@ -48,7 +47,7 @@ const CustomerAuthLayout = () => {
         }}
       >
         <img
-          src={logo2}
+          // src={logo2}
           alt="auth illustration"
           style={{
             width: '100%',

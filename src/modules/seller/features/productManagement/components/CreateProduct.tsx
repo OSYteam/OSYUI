@@ -1,18 +1,16 @@
-import { Box, Stack, TextField, Typography, Button } from '@mui/material'
 import { useState } from 'react'
+import { Box, Stack, TextField, Typography, Button } from '@mui/material'
 import VariantForm from './VariantForm'
 import { GoPlus } from 'react-icons/go'
 import { CreateProductDto, CreateProductVariantDto } from '../dto/CreateProductDto'
-import { createProduct, uploadVariantImage } from '../../service/seller.service'
-import { useAuthStore } from '../../../auth/store/authStore'
-import { ProductResponseDto } from '../dto/ProducResponseDto'
 
 import Backdrop from '@mui/material/Backdrop';
-
-import '../../../../App.css'
-import { useProductStore } from '../../store/productStore'
 import { useNavigate } from 'react-router-dom'
-import LoadingSpinner from '../../../../common/components/LoadingSpinner'
+import LoadingSpinner from '../../../../../common/components/LoadingSpinner'
+import { useAuthStore } from '../../../../auth/store/authStore'
+import { createProduct, uploadVariantImage } from '../../../service/seller.service'
+import { useProductStore } from '../../../store/productStore'
+
 
 
 function CreateProduct() {

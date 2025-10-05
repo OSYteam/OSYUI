@@ -4,8 +4,8 @@ import {
 } from '@mui/material'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ProductStatus } from '../enum/productStatus'
-import { AttributeOptions } from '../../../../common/enums/Attributes'
 import { CreateProductVariantDto, CreateVariantAttributeInput } from '../dto/CreateProductDto'
+import { AttributeOptions } from '../../../../../common/enums/Attributes';
 
 interface VariantFormProps {
     id: number;

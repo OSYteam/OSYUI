@@ -8,12 +8,8 @@ import {
     TextField,
     Typography,
 } from '@mui/material';
-import { Link, useNavigate } from 'react-router-dom';
-import { assignRole, register } from '../user/user.service';
 import { useState } from 'react';
-import { RegisterDto } from './dto/RegisterDto';
-import { UserRole } from '../../common/enums/UserRole';
-import { CreateUserRoleDto } from '../user/dto/CreateUserRoleDto';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const Register = () => {
@@ -35,30 +31,30 @@ const Register = () => {
 
     const handleRegister = async () => {
 
-        const dto: RegisterDto = {
-            email: formData.email,
-            password: formData.password,
-            name: formData.name,
-            surname: formData.surname,
-            phone: formData.phone
-        }
-        try {
+        // const dto: RegisterDto = {
+        //     email: formData.email,
+        //     password: formData.password,
+        //     name: formData.name,
+        //     surname: formData.surname,
+        //     phone: formData.phone
+        // }
+        // try {
 
-            const roleIndex = userType === 'customer' ? UserRole.CUSTOMER : UserRole.SELLER;
+        //     const roleIndex = userType === 'customer' ? UserRole.CUSTOMER : UserRole.SELLER;
 
-            const userId = await register(dto);
+        //     const userId = await register(dto);
 
-            const roleDto: CreateUserRoleDto = {
-                userId,
-                roles: [roleIndex]
-            }
+        //     const roleDto: CreateUserRoleDto = {
+        //         userId,
+        //         roles: [roleIndex]
+        //     }
 
-            await assignRole(roleDto);
+        //     await assignRole(roleDto);
 
-        } catch (error) {
-            console.error(error);
-            alert("Register TSX Kayıt işlemi başarısız oldu");
-        }
+        // } catch (error) {
+        //     console.error(error);
+        //     alert("Register TSX Kayıt işlemi başarısız oldu");
+        // }s
     };
 
     return (
