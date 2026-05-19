@@ -1,6 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { MainLayout } from '../layouts';
 import { AuthLayout } from '../layouts';
+import OrdersPage from '../modules/orders/pages';
 
 /**
  * Auth routes (Giriş yapmamış kullanıcılar)
@@ -30,7 +31,7 @@ const mainRoutes = [
     children: [
       { index: true, element: <div>Dashboard Page</div> },
       { path: 'dashboard', element: <div>Dashboard Page</div> },
-      { path: 'orders', element: <div>Orders Page</div> },
+      { path: 'orders', element: <OrdersPage /> },
       { path: 'orders/:id', element: <div>Order Detail Page</div> },
       { path: 'menu', element: <div>Menu Page</div> },
       { path: 'menu/create', element: <div>Create Product Page</div> },

@@ -32,6 +32,7 @@ import {
     Search as SearchIcon,
     Notifications as NotificationsIcon,
     Mail as MailIcon,
+    ChevronLeft as ChevronLeftIcon,
 } from '@mui/icons-material';
 import { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
@@ -76,7 +77,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 
-const drawerWidth = 200;
+const drawerWidth = 240;
+const miniDrawerWidth = 64;
 
 const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/panel/dashboard' },
@@ -95,10 +97,15 @@ const settingsItems = [
 const MainLayout = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [notificationAnchorEl, setNotificationAnchorEl] = useState<null | HTMLElement>(null);
+    const [drawerOpen, setDrawerOpen] = useState(true);
     const open = Boolean(anchorEl);
     const notificationOpen = Boolean(notificationAnchorEl);
     const navigate = useNavigate();
     const location = useLocation();
+
+    const handleDrawerToggle = () => {
+        setDrawerOpen(!drawerOpen);
+    };
 
     const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -123,24 +130,42 @@ const MainLayout = () => {
             {/* Drawer Navigation */}
             <Drawer
                 sx={{
-                    width: drawerWidth,
+                    width: drawerOpen ? drawerWidth : miniDrawerWidth,
                     flexShrink: 0,
                     '& .MuiDrawer-paper': {
-                        width: drawerWidth,
+                        width: drawerOpen ? drawerWidth : miniDrawerWidth,
                         boxSizing: 'border-box',
                         borderRight: '1px solid #e0e0e0',
+                        overflowX: 'hidden',
+                        transition: 'width 0.3s',
                     },
                 }}
                 variant="permanent"
                 anchor="left"
             >
-                <Box sx={{ p: 2, textAlign: 'center', borderBottom: '1px solid #e0e0e0' }}>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
-                        OSY
-                    </Typography>
-                    <Typography variant="caption" color="text.secondary">
-                        Sipariş Yönetimi
-                    </Typography>
+                <Box sx={{ 
+                    p: 2, 
+                    textAlign: 'center', 
+                    borderBottom: '1px solid #e0e0e0',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: drawerOpen ? 'space-between' : 'center',
+                    minHeight: 64,
+                }}>
+                    {drawerOpen && (
+                        <Box sx={{ flexGrow: 1 }}>
+                            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+                                OSY
+                            </Typography>
+                          
+                        </Box>
+                    )}
+                    <IconButton onClick={handleDrawerToggle} size="small">
+                        <ChevronLeftIcon sx={{ 
+                            transform: drawerOpen ? 'rotate(0deg)' : 'rotate(180deg)',
+                            transition: 'transform 0.3s'
+                        }} />
+                    </IconButton>
                 </Box>
 
                 <List sx={{ mt: 1 }}>
@@ -150,6 +175,9 @@ const MainLayout = () => {
                                 selected={location.pathname === item.path}
                                 onClick={() => navigate(item.path)}
                                 sx={{
+                                    minHeight: 48,
+                                    justifyContent: drawerOpen ? 'initial' : 'center',
+                                    px: 2.5,
                                     '&.Mui-selected': {
                                         backgroundColor: '#e3f2fd',
                                         '&:hover': {
@@ -158,16 +186,22 @@ const MainLayout = () => {
                                     },
                                 }}
                             >
-                                <ListItemIcon sx={{ minWidth: 40 }}>
+                                <ListItemIcon sx={{ 
+                                    minWidth: 0,
+                                    mr: drawerOpen ? 2 : 'auto',
+                                    justifyContent: 'center'
+                                }}>
                                     {item.icon}
                                 </ListItemIcon>
-                                <ListItemText 
-                                    primary={item.text} 
-                                    primaryTypographyProps={{
-                                        fontSize: '0.9rem',
-                                        fontWeight: location.pathname === item.path ? 600 : 400
-                                    }}
-                                />
+                                {drawerOpen && (
+                                    <ListItemText 
+                                        primary={item.text} 
+                                        primaryTypographyProps={{
+                                            fontSize: '0.9rem',
+                                            fontWeight: location.pathname === item.path ? 600 : 400
+                                        }}
+                                    />
+                                )}
                             </ListItemButton>
                         </ListItem>
                     ))}
@@ -182,6 +216,9 @@ const MainLayout = () => {
                                 selected={location.pathname === item.path}
                                 onClick={() => navigate(item.path)}
                                 sx={{
+                                    minHeight: 48,
+                                    justifyContent: drawerOpen ? 'initial' : 'center',
+                                    px: 2.5,
                                     '&.Mui-selected': {
                                         backgroundColor: '#e3f2fd',
                                         '&:hover': {
@@ -190,16 +227,22 @@ const MainLayout = () => {
                                     },
                                 }}
                             >
-                                <ListItemIcon sx={{ minWidth: 40 }}>
+                                <ListItemIcon sx={{ 
+                                    minWidth: 0,
+                                    mr: drawerOpen ? 2 : 'auto',
+                                    justifyContent: 'center'
+                                }}>
                                     {item.icon}
                                 </ListItemIcon>
-                                <ListItemText 
-                                    primary={item.text}
-                                    primaryTypographyProps={{
-                                        fontSize: '0.9rem',
-                                        fontWeight: location.pathname === item.path ? 600 : 400
-                                    }}
-                                />
+                                {drawerOpen && (
+                                    <ListItemText 
+                                        primary={item.text}
+                                        primaryTypographyProps={{
+                                            fontSize: '0.9rem',
+                                            fontWeight: location.pathname === item.path ? 600 : 400
+                                        }}
+                                    />
+                                )}
                             </ListItemButton>
                         </ListItem>
                     ))}
@@ -210,12 +253,13 @@ const MainLayout = () => {
             <AppBar
                 position="fixed"
                 sx={{
-                    width: `calc(100% - ${drawerWidth}px)`,
-                    ml: `${drawerWidth}px`,
+                    width: `calc(100% - ${drawerOpen ? drawerWidth : miniDrawerWidth}px)`,
+                    ml: `${drawerOpen ? drawerWidth : miniDrawerWidth}px`,
                     backgroundColor: "#fff",
                     color: "#333",
                     boxShadow: "none",
                     borderBottom: "1px solid #ddd",
+                    transition: 'width 0.3s, margin 0.3s',
                 }}
                 elevation={0}
             >
