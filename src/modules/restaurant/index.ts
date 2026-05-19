@@ -1,1 +1,1 @@
-export { default as RestaurantMainLayout } from './layouts';
+export { default as MainLayout } from '../../layouts/MainLayout';

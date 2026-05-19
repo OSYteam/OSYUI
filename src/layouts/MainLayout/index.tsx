@@ -15,7 +15,7 @@ import { Outlet } from 'react-router-dom';
 
 const drawerWidth = 200;
 
-const RestaurantMainLayout = () => {
+const MainLayout = () => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
@@ -100,4 +100,4 @@ const RestaurantMainLayout = () => {
     );
 };
 
-export default RestaurantMainLayout;
+export default MainLayout;
