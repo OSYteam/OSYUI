@@ -81,7 +81,7 @@ const drawerWidth = 240;
 const miniDrawerWidth = 64;
 
 const menuItems = [
-    { text: 'Dashboard', icon: <DashboardIcon />, path: '/panel/dashboard' },
+    { text: 'Restoranım', icon: <DashboardIcon />, path: '/panel/home' },
     { text: 'Siparişler', icon: <OrdersIcon />, path: '/panel/orders' },
     { text: 'Menü', icon: <MenuIcon />, path: '/panel/menu' },
     { text: 'Stok', icon: <InventoryIcon />, path: '/panel/inventory' },

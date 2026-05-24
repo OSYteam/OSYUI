@@ -29,8 +29,8 @@ const mainRoutes = [
     path: '/panel',
     element: <MainLayout />,
     children: [
-      { index: true, element: <div>Dashboard Page</div> },
-      { path: 'dashboard', element: <div>Dashboard Page</div> },
+      { index: true, element: <div>Restoranım</div> },
+      { path: 'home', element: <div>Restoranım</div> },
       { path: 'orders', element: <OrdersPage /> },
       { path: 'orders/:id', element: <div>Order Detail Page</div> },
       { path: 'menu', element: <div>Menu Page</div> },
