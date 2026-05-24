@@ -1,128 +1,80 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-
-import RootLayout from '../modules/main/layout/RootLayout';
-
-import ForgetPassword from '../modules/auth/ForgetPassword';
-import MailVerify from '../modules/auth/MailVerify';
-import Register from '../modules/auth/Register';
-
-
-
-import CustomerLogin from '../modules/customer/auth';
-import CustomerRouteGuard from '../modules/customer/auth/CustomerRouteGuard';
-import CustomerAuthLayout from '../modules/customer/layouts/CustomerAuthLayout';
-import CustomerMainLayout from '../modules/customer/layouts/CustomerMainLayout';
-import Home from '../modules/main/components/home';
-import SellerLogin from '../modules/seller/auth';
-import Dashboard from '../modules/seller/features/dashboard';
-import ProductList from '../modules/seller/features/productManagement/features/productList';
-import SellerAuthLayout from '../modules/seller/layouts/SellerAuthLayout';
-import SellerMainLayout from '../modules/seller/layouts/sellerMainLayout';
-import CreateProduct from '../modules/seller/features/productManagement/features/createProduct';
-
+import { MainLayout } from '../layouts';
+import { AuthLayout } from '../layouts';
+import OrdersPage from '../modules/orders/pages';
 
 /**
- * Main Site
- * Herkes bu route altındaki sayfalara erişebilir auth gerektirmez.
+ * Auth routes (Giriş yapmamış kullanıcılar)
+ * AuthLayout içinde render edilir
+ */
+const authRoutes = [
+  {
+    path: '/auth',
+    element: <AuthLayout />,
+    children: [
+      { index: true, element: <div>Login Page</div> },
+      { path: 'login', element: <div>Login Page</div> },
+      { path: 'register', element: <div>Register Page</div> },
+      { path: 'forgot-password', element: <div>Forgot Password Page</div> },
+    ]
+  }
+];
+
+/**
+ * Main routes (Giriş yapmış kullanıcılar)
+ * MainLayout içinde render edilir
  */
 const mainRoutes = [
-  // all PUBLIC 
   {
-    path: '/',
-    element: <RootLayout />,
+    path: '/panel',
+    element: <MainLayout />,
     children: [
-      { index: true, element: <Home /> },
+      { index: true, element: <div>Restoranım</div> },
+      { path: 'home', element: <div>Restoranım</div> },
+      { path: 'orders', element: <OrdersPage /> },
+      { path: 'orders/:id', element: <div>Order Detail Page</div> },
+      { path: 'menu', element: <div>Menu Page</div> },
+      { path: 'menu/create', element: <div>Create Product Page</div> },
+      { path: 'inventory', element: <div>Inventory Page</div> },
+      { path: 'platforms', element: <div>Platforms Page</div> },
+      { path: 'analytics', element: <div>Analytics Page</div> },
+      { path: 'settings', element: <div>Settings Page</div> },
+      { path: 'profile', element: <div>Profile Page</div> },
     ]
-  },
-
-
+  }
 ];
-
-
 
 /**
- * Customer Routes
- *  Sadece auth olmuş customerlar erişebilir.
+ * Fallback route (404 - Sayfa bulunamadı)
  */
-const customerRoutes = [
-
-  // auth
+const fallbackRoutes = [
   {
-    path: '/customer/auth',
-    element: <CustomerAuthLayout />,
-    children: [
-      { index: true, element: <CustomerLogin /> },
-      { path: 'register', element: <Register /> },
-      { path: 'forget-password', element: <ForgetPassword /> },
-      { path: 'mail-verify', element: <MailVerify /> },
-    ]
-  },
-
-  // protected
-  {
-    path: '/customer',
-    element: <CustomerRouteGuard />,
-    children: [
-      {
-        element: <CustomerMainLayout />,
-        children: [
-          // sepet, hesap sayfası vs...
-        ]
-      }
-    ]
-  },
+    path: '*',
+    element: <div style={{ 
+      display: 'flex', 
+      alignItems: 'center', 
+      justifyContent: 'center', 
+      height: '100vh',
+      flexDirection: 'column',
+      gap: '1rem'
+    }}>
+      <h1>404</h1>
+      <p>Sayfa bulunamadı</p>
+      <a href="/panel" style={{ color: '#1976d2' }}>Ana Sayfaya Dön</a>
+    </div>
+  }
 ];
-
-
-
-/**
- * Seller routes
- *  Sadece auth olmuş seller erişebilir.
- */
-const sellerRoutes = [
-
-  // auth
-  {
-    path: '/seller/auth',
-    element: <SellerAuthLayout />,
-    children: [
-      { index: true, element: <SellerLogin /> },
-      // register, forget-password vs.
-    ]
-  },
-
-  // protected
-  {
-    path: '/seller',
-    // element: <SellerRouteGuard />,
-    children: [
-      {
-        element: <SellerMainLayout />,
-        children: [
-          { index: true, element: <Dashboard /> },
-          { path: 'product/list', element: <ProductList /> },
-          { path: 'product/create', element: <CreateProduct /> }
-        ]
-      }
-    ]
-  },
-];
-
 
 /**
  * Router
- *  Tüm modül routeları burada oluşturulur.
+ * Tüm route'lar burada birleştirilir
  */
-
 const router = createBrowserRouter([
-
+  ...authRoutes,
   ...mainRoutes,
-  ...customerRoutes,
-  ...sellerRoutes,
-  // admin here...
-
+  ...fallbackRoutes,
 ]);
 
 const AppRoutes = () => <RouterProvider router={router} />;
-export const useRouter = () => router;
+
 export default AppRoutes;
