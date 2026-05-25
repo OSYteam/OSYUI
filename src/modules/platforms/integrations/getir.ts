@@ -8,7 +8,7 @@ import { io, Socket } from 'socket.io-client';
 export const getirConfig = {
   apiUrl: import.meta.env.VITE_GETIR_API_URL,
   apiKey: import.meta.env.VITE_GETIR_API_KEY,
-  socketUrl: import.meta.env.VITE_SOCKET_URL || 'http://localhost:3000',
+  socketUrl: import.meta.env.VITE_SOCKET_URL || 'http://localhost:3000/getir?id=REST_99',
 };
 
 interface NewOrderData {
