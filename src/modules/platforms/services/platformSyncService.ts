@@ -51,8 +51,7 @@ export class PlatformSyncService {
     switch (platform) {
       case 'yemeksepeti':
         return this.yemeksepeti.updateOrderStatus(orderId, status);
-      case 'getir':
-        return this.getir.updateOrderStatus(orderId, status);
+
       case 'trendyol':
         return this.trendyol.updateOrderStatus(orderId, status);
       default:

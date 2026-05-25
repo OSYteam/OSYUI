@@ -4,8 +4,8 @@
  */
 
 export const yemeksepetiConfig = {
-  apiUrl: process.env.VITE_YEMEKSEPETI_API_URL,
-  apiKey: process.env.VITE_YEMEKSEPETI_API_KEY,
+  apiUrl: import.meta.env.VITE_YEMEKSEPETI_API_URL,
+  apiKey: import.meta.env.VITE_YEMEKSEPETI_API_KEY,
 };
 
 export class YemeksepetiIntegration {
