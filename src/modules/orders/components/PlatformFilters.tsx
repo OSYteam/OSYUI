@@ -1,93 +1,106 @@
-import { FC } from 'react';
-import { Paper, ButtonGroup, Button } from '@mui/material';
+import { FC } from "react";
+import { Paper, ButtonGroup, Button } from "@mui/material";
 
-type Platform = 'yemeksepeti' | 'getir' | 'trendyol' | 'migros' | 'all';
+type Platform = "yemeksepeti" | "getir" | "trendyol" | "migros" | "all";
+
+const getPlatformColor = (platform: Platform) => {
+  switch (platform) {
+    case "yemeksepeti":
+      return "#ff0000";
+    case "getir":
+      return "#5d3ebc";
+    case "trendyol":
+      return "#f27a1a";
+    case "migros":
+      return "#ff6600";
+    default:
+      return "#666";
+  }
+};
+
+const getButtonStyles = (platform: Platform, selectedPlatform: Platform) => {
+  const isSelected = platform === selectedPlatform;
+  const color = getPlatformColor(platform);
+
+  return {
+    backgroundColor: color,
+    color: "white",
+    borderRadius: "15px !important",
+    transform: isSelected ? "scale(.9)" : "scale(.8)",
+    boxShadow: isSelected ? `0 0 12px ${color}` : "0 2px 5px rgba(0,0,0,0.1)",
+    transition: "all 0.2s ease",
+    "&:hover": {
+      transform: "scale(.9)",
+      opacity: 1,
+    },
+  };
+};
 
 interface PlatformFiltersProps {
-    selectedPlatform: Platform;
-    onPlatformChange: (platform: Platform) => void;
-    orderCounts: {
-        all: number;
-        yemeksepeti: number;
-        getir: number;
-        trendyol: number;
-        migros: number;
-    };
+  selectedPlatform: Platform;
+  onPlatformChange: (platform: Platform) => void;
+  orderCounts: {
+    all: number;
+    yemeksepeti: number;
+    getir: number;
+    trendyol: number;
+    migros: number;
+  };
 }
 
 const PlatformFilters: FC<PlatformFiltersProps> = ({
-    selectedPlatform,
-    onPlatformChange,
-    orderCounts,
+  selectedPlatform,
+  onPlatformChange,
+  orderCounts,
 }) => {
-    return (
-        <Paper sx={{ p: 2, mb: 3 }}>
-            <ButtonGroup variant="outlined" sx={{ flexWrap: 'wrap', gap: 1 }} color="inherit">
-                <Button
-                    variant={selectedPlatform === 'all' ? 'contained' : 'outlined'}
-                    onClick={() => onPlatformChange('all')}
-                >
-                    Tümü ({orderCounts.all})
-                </Button>
-                <Button
-                    variant={selectedPlatform === 'yemeksepeti' ? 'contained' : 'outlined'}
-                    onClick={() => onPlatformChange('yemeksepeti')}
-                    sx={{
-                        borderColor: selectedPlatform === 'yemeksepeti' ? '#ff0000' : undefined,
-                        backgroundColor: selectedPlatform === 'yemeksepeti' ? '#ff0000' : undefined,
-                        '&:hover': {
-                            borderColor: '#ff0000',
-                            backgroundColor: selectedPlatform === 'yemeksepeti' ? '#cc0000' : 'rgba(255, 0, 0, 0.04)',
-                        }
-                    }}
-                >
-                    Yemeksepeti ({orderCounts.yemeksepeti})
-                </Button>
-                <Button
-                    variant={selectedPlatform === 'getir' ? 'contained' : 'outlined'}
-                    onClick={() => onPlatformChange('getir')}
-                    sx={{
-                        borderColor: selectedPlatform === 'getir' ? '#5d3ebc' : undefined,
-                        backgroundColor: selectedPlatform === 'getir' ? '#5d3ebc' : undefined,
-                        '&:hover': {
-                            borderColor: '#5d3ebc',
-                            backgroundColor: selectedPlatform === 'getir' ? '#4a2f99' : 'rgba(93, 62, 188, 0.04)',
-                        }
-                    }}
-                >
-                    Getir Yemek ({orderCounts.getir})
-                </Button>
-                <Button
-                    variant={selectedPlatform === 'trendyol' ? 'contained' : 'outlined'}
-                    onClick={() => onPlatformChange('trendyol')}
-                    sx={{
-                        borderColor: selectedPlatform === 'trendyol' ? '#f27a1a' : undefined,
-                        backgroundColor: selectedPlatform === 'trendyol' ? '#f27a1a' : undefined,
-                        '&:hover': {
-                            borderColor: '#f27a1a',
-                            backgroundColor: selectedPlatform === 'trendyol' ? '#d96a15' : 'rgba(242, 122, 26, 0.04)',
-                        }
-                    }}
-                >
-                    Trendyol Yemek ({orderCounts.trendyol})
-                </Button>
-                <Button
-                    variant={selectedPlatform === 'migros' ? 'contained' : 'outlined'}
-                    onClick={() => onPlatformChange('migros')}
-                    sx={{
-                        borderColor: selectedPlatform === 'migros' ? '#ff6600' : undefined,
-                        backgroundColor: selectedPlatform === 'migros' ? '#ff6600' : undefined,
-                        '&:hover': {
-                            borderColor: '#ff6600',
-                            backgroundColor: selectedPlatform === 'migros' ? '#cc5200' : 'rgba(255, 102, 0, 0.04)',
-                        }
-                    }}
-                >
-                    Migros Yemek ({orderCounts.migros})
-                </Button>
-            </ButtonGroup>
-        </Paper>
-    );
+  return (
+    <Paper sx={{ p: 2, mb: 3 }}>
+      <ButtonGroup
+        variant="outlined"
+        sx={{ flexWrap: "wrap", gap: 1 }}
+        color="inherit"
+      >
+        <Button
+          variant={selectedPlatform === "all" ? "contained" : "outlined"}
+          onClick={() => onPlatformChange("all")}
+          sx={getButtonStyles("all", selectedPlatform)}
+        >
+          Tümü ({orderCounts.all})
+        </Button>
+
+        <Button
+          onClick={() => onPlatformChange("yemeksepeti")}
+          sx={getButtonStyles("yemeksepeti", selectedPlatform)}
+        >
+          Yemeksepeti ({orderCounts.yemeksepeti})
+        </Button>
+
+        <Button
+          variant={selectedPlatform === "getir" ? "contained" : "outlined"}
+          onClick={() => onPlatformChange("getir")}
+          sx={getButtonStyles("getir", selectedPlatform)}
+        >
+          Getir Yemek ({orderCounts.getir})
+        </Button>
+
+        <Button
+          variant={selectedPlatform === "trendyol" ? "contained" : "outlined"}
+          onClick={() => onPlatformChange("trendyol")}
+          sx={getButtonStyles("trendyol", selectedPlatform)}
+        >
+          Trendyol Yemek ({orderCounts.trendyol})
+        </Button>
+
+        <Button
+          variant={selectedPlatform === "migros" ? "contained" : "outlined"}
+          onClick={() => onPlatformChange("migros")}
+          sx={getButtonStyles("migros", selectedPlatform)}
+        >
+          Migros Yemek ({orderCounts.migros})
+        </Button>
+      </ButtonGroup>
+    </Paper>
+  );
 };
 
 export default PlatformFilters;
